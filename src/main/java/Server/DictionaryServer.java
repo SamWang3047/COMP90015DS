@@ -1,4 +1,5 @@
 package Server;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -7,8 +8,11 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class DictionaryServer {
     private static Map<String, String> dictionary = new HashMap<>();
@@ -16,9 +20,17 @@ public class DictionaryServer {
     private static int port = 0;
     private static final String DEFAULT_DICTIONARY_PATH = "src/Dictionary.json";
 
-    public static void main(String[] args) {
+    private void run(String[] args) {
         validation(args);
         loadDictionaryFromFile(dicPath);
+
+        int corePoolSize = 10; // Adjust the number of threads as needed
+        int maxPoolSize = 20;  // Maximum number of threads in the pool
+        long keepAliveTime = 60L; // Thread idle time before it's terminated
+
+        ExecutorService threadPool = new ThreadPoolExecutor(
+                corePoolSize, maxPoolSize, keepAliveTime,
+                TimeUnit.SECONDS, new LinkedBlockingQueue<>());
         try {
             ServerSocket serverSocket = new ServerSocket(port);
             System.out.println("Server is listening on port " + port);
@@ -26,91 +38,15 @@ public class DictionaryServer {
             while (true) {
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("Accepted connection from " + clientSocket.getInetAddress());
-
-                Thread clientThread = new Thread(() -> handleClient(clientSocket));
-                clientThread.start();
+                //thread pool
+                threadPool.execute(new RequestHandlerThread(clientSocket, this));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    private static void handleClient(Socket clientSocket) {
-        try (
-                BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))
-        ) {
-            String request = reader.readLine();
-            JSONObject response = processRequest(request);
-
-            writer.write(response.toJSONString() + "\n");
-            writer.flush();
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static JSONObject processRequest(String request) throws ParseException {
-        JSONParser parser = new JSONParser();
-        JSONObject requestData = (JSONObject) parser.parse(request);
-        JSONObject responseData = new JSONObject();
-
-        String command = (String) requestData.get("command");
-        String word = (String) requestData.get("word");
-        String meanings = (String) requestData.get("meanings");
-
-        switch (command) {
-            case "SEARCH":
-                String meaning = dictionary.get(word);
-                if (meaning != null) {
-                    responseData.put("status", "success");
-                    responseData.put("meanings", meaning);
-                } else {
-                    responseData.put("status", "not found");
-                }
-                break;
-
-            case "ADD":
-                if (!dictionary.containsKey(word)) {
-                    if (meanings != null && !meanings.isEmpty()) {
-                        dictionary.put(word, meanings);
-                        responseData.put("status", "success");
-                    } else {
-                        responseData.put("status", "error");
-                        responseData.put("message", "Meanings cannot be empty");
-                    }
-                } else {
-                    responseData.put("status", "duplicate");
-                }
-                break;
-
-            case "REMOVE":
-                if (dictionary.containsKey(word)) {
-                    dictionary.remove(word);
-                    responseData.put("status", "success");
-                } else {
-                    responseData.put("status", "not found");
-                }
-                break;
-
-            case "UPDATE":
-                if (dictionary.containsKey(word) && meanings != null && !meanings.isEmpty()) {
-                    dictionary.put(word, meanings);
-                    responseData.put("status", "success");
-                } else {
-                    responseData.put("status", "not found");
-                }
-                break;
-
-            default:
-                responseData.put("status", "error");
-                responseData.put("message", "Invalid command");
-        }
-
-        return responseData;
-    }
-
-    private static void validation(String[] args) {
+    private void validation(String[] args) {
         if (args.length < 2) {
             System.err.println("Usage: java -jar <port> <filepath>");
             System.exit(1);
@@ -131,15 +67,14 @@ public class DictionaryServer {
         dicPath = args[1];
         File file = new File(dicPath);
 
-        //if dictionary file path is not valid, the path will be set into a default value and a new dictionary will be created.
+        // if the dictionary file path is not valid, the path will be set into a default value and a new dictionary will be created.
         if (!file.exists() || !file.canRead()) {
             System.err.println("Error: Invalid dictionary file path");
             dicPath = DEFAULT_DICTIONARY_PATH;
             createEmptyDictionaryFile();
         }
     }
-
-    private static void loadDictionaryFromFile(String dicPath) {
+    private void loadDictionaryFromFile(String dicPath) {
         JSONParser parser = new JSONParser();
         try {
             FileReader fileReader = new FileReader(dicPath);
@@ -158,14 +93,27 @@ public class DictionaryServer {
         }
     }
 
-
-    private static void createEmptyDictionaryFile() {
+    private void createEmptyDictionaryFile() {
         try (FileWriter fileWriter = new FileWriter(dicPath)) {
             fileWriter.write("{}"); // An empty JSON object
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    public static void main(String[] args) {
+        DictionaryServer dictionaryServer = new DictionaryServer();
+        dictionaryServer.run(args);
+    }
 
+    public Map<String, String> getDictionary() {
+        return dictionary;
+    }
+
+    public String getDicPath() {
+        return dicPath;
+    }
+
+    public int getPort() {
+        return port;
+    }
 }
-
