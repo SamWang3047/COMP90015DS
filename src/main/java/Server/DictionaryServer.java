@@ -7,16 +7,21 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DictionaryServer {
     private static Map<String, String> dictionary = new HashMap<>();
+    private static String dicPath = "";
+    private static int port = 0;
+    private static final String DEFAULT_DICTIONARY_PATH = "src/Dictionary.json";
 
     public static void main(String[] args) {
-        int portNumber = 8888;
+        validation(args);
+        loadDictionaryFromFile(dicPath);
         try {
-            ServerSocket serverSocket = new ServerSocket(portNumber);
-            System.out.println("Server is listening on port " + portNumber);
+            ServerSocket serverSocket = new ServerSocket(port);
+            System.out.println("Server is listening on port " + port);
 
             while (true) {
                 Socket clientSocket = serverSocket.accept();
@@ -104,5 +109,63 @@ public class DictionaryServer {
 
         return responseData;
     }
+
+    private static void validation(String[] args) {
+        if (args.length < 2) {
+            System.err.println("Usage: java -jar <port> <filepath>");
+            System.exit(1);
+        }
+
+        try {
+            port = Integer.parseInt(args[0]);
+        } catch (NumberFormatException e) {
+            System.err.println("Error: Invalid port number");
+            System.exit(1);
+        }
+
+        if (port < 1 || port > 65535) {
+            System.err.println("Error: Invalid port number");
+            System.exit(1);
+        }
+
+        dicPath = args[1];
+        File file = new File(dicPath);
+
+        //if dictionary file path is not valid, the path will be set into a default value and a new dictionary will be created.
+        if (!file.exists() || !file.canRead()) {
+            System.err.println("Error: Invalid dictionary file path");
+            dicPath = DEFAULT_DICTIONARY_PATH;
+            createEmptyDictionaryFile();
+        }
+    }
+
+    private static void loadDictionaryFromFile(String dicPath) {
+        JSONParser parser = new JSONParser();
+        try {
+            FileReader fileReader = new FileReader(dicPath);
+            JSONObject jsonObject = (JSONObject) parser.parse(fileReader);
+
+            // Assuming the JSON file has a key-value structure like {"word": "meaning"}
+            for (Object key : jsonObject.keySet()) {
+                String word = (String) key;
+                String meaning = (String) jsonObject.get(key);
+                dictionary.put(word, meaning);
+            }
+
+            fileReader.close();
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private static void createEmptyDictionaryFile() {
+        try (FileWriter fileWriter = new FileWriter(dicPath)) {
+            fileWriter.write("{}"); // An empty JSON object
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
 
