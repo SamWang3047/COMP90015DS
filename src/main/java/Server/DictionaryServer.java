@@ -41,7 +41,7 @@ public class DictionaryServer {
                 //thread pool
                 threadPool.execute(new RequestHandlerThread(clientSocket, this));
             }
-        } catch (IOException e) {
+        } catch (IOException | NullPointerException e) {
             e.printStackTrace();
         }
     }

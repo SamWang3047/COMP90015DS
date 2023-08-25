@@ -5,101 +5,41 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class DictionaryClient {
     private static String address = ""; // Change to server IP if needed
     private static int serverPort = 0; // Change to server port if needed
+    private BufferedReader reader;
+    private BufferedWriter writer;
+    private DictionaryClientGUI gui;
+
+    public DictionaryClient() {
+        try {
+            Socket socket = new Socket(address, serverPort);
+            this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+            gui = new DictionaryClientGUI(this); // Pass the client instance to the GUI
+        } catch (UnknownHostException e) {
+            System.err.println("Don't know about host: " + address);
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for the connection to: " + address);
+            System.exit(1);
+        }
+
+    }
 
     public static void main(String[] args) {
         validation(args);
-        try (Socket socket = new Socket(address, serverPort);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
-
-            Scanner scanner = new Scanner(System.in);
-            while (true) {
-                try {
-                    run(scanner, reader, writer);
-                } catch (IOException e) {
-                    System.out.println("Input Exception, please try again!");
-                    e.printStackTrace();
-                } catch (ParseException e) {
-                    System.out.println("Parse Exception");
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        DictionaryClient dictionaryClient = new DictionaryClient();
     }
 
-    private static void run(Scanner scanner, BufferedReader reader, BufferedWriter writer) throws IOException, ParseException {
-
-        System.out.println("-----------------------------------");
-        System.out.println("Choose an option:");
-        System.out.println("1. Query a word");
-        System.out.println("2. Add a word");
-        System.out.println("3. Remove a word");
-        System.out.println("4. Update a word");
-        System.out.print("Enter your choice: ");
-
-        int choice = scanner.nextInt() - 1;
-        scanner.nextLine(); // Consume newline
-
-        JSONObject request = new JSONObject();
-
-        switch (choice) {
-            case StateCode.QUERY:
-                System.out.print("Enter the word to query: ");
-                String wordToQuery = scanner.nextLine();
-                request = createQueryRequest(StateCode.QUERY, wordToQuery, null);
-                break;
-            case StateCode.ADD:
-                System.out.print("Enter the word to add: ");
-                String wordToAdd = scanner.nextLine();
-                System.out.print("Enter the meanings: ");
-                String meaningsToAdd = scanner.nextLine();
-                request = createQueryRequest(StateCode.ADD, wordToAdd, meaningsToAdd);
-                break;
-            case StateCode.REMOVE:
-                System.out.print("Enter the word to remove: ");
-                String wordToRemove = scanner.nextLine();
-                request = createQueryRequest(StateCode.REMOVE, wordToRemove, null);
-                break;
-            case StateCode.UPDATE:
-                System.out.print("Enter the word to update: ");
-                String wordToUpdate = scanner.nextLine();
-                System.out.print("Enter the new meanings: ");
-                String newMeanings = scanner.nextLine();
-                request = createQueryRequest(StateCode.UPDATE, wordToUpdate, newMeanings);
-                break;
-            default:
-                System.out.println("Invalid choice.");
-        }
-
-        if (!request.isEmpty()) {
-            sendRequest(writer, request);
-            String response = reader.readLine();
-            JSONObject jsonResponse = (JSONObject) new JSONParser().parse(response);
-            processResponse(jsonResponse);
-        }
-    }
-
-    private static JSONObject createQueryRequest(int command, String word, String meanings) {
-        JSONObject request = new JSONObject();
-        request.put("command", command);
-        request.put("word", word);
-        request.put("meanings", meanings);
-        return request;
-    }
-
-    private static void sendRequest(BufferedWriter writer, JSONObject request) throws IOException {
-        writer.write(request.toJSONString() + "\n");
-        writer.flush();
-    }
 
     private static void processResponse(JSONObject response) {
         int status = Integer.parseInt(response.get("status").toString());
@@ -173,5 +113,32 @@ public class DictionaryClient {
             System.exit(1);
         }
 
+    }
+    public void addWord(String word, String meanings) throws IOException, ParseException {
+        JSONObject request = new JSONObject();
+        request.put("command", StateCode.ADD);
+        request.put("word", word);
+        request.put("meanings", meanings);
+        sendRequest(request);
+    }
+
+    private void sendRequest(JSONObject request) {
+        try {
+            writer.write(request.toJSONString() + "\n");
+            writer.flush();
+            String response = reader.readLine();
+            JSONObject jsonResponse = (JSONObject) new JSONParser().parse(response);
+            processResponse(jsonResponse);
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "An error occurred while sending the request.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    public BufferedReader getReader() {
+        return reader;
+    }
+
+    public BufferedWriter getWriter() {
+        return writer;
     }
 }
