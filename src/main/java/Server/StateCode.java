@@ -1,6 +1,7 @@
 package Server;
 
 public class StateCode {
+    public final static String[] codeToWord = {"QUERY", "ADD", "REMOVE", "UPDATE", "SUCCESS", "FAIL"};
     public final static int QUERY = 0;
     public final static int ADD = 1;
     public final static int REMOVE = 2;

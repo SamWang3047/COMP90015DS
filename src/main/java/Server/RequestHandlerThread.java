@@ -1,5 +1,6 @@
 package Server;
 
+import com.sun.jdi.request.StepRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -26,11 +27,13 @@ public class RequestHandlerThread extends Thread {
                 BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))
         ) {
-            String request = reader.readLine();
-            JSONObject response = processRequest(request);
+            while (true) {
+                String request = reader.readLine();
+                JSONObject response = processRequest(request);
 
-            writer.write(response.toJSONString() + "\n");
-            writer.flush();
+                writer.write(response.toJSONString() + "\n");
+                writer.flush();
+            }
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         } finally {
@@ -47,27 +50,31 @@ public class RequestHandlerThread extends Thread {
         JSONObject responseData = new JSONObject();
 
         int command = Integer.parseInt(requestData.get("command").toString());
+        responseData.put("command", command);
         String word = (String) requestData.get("word");
         String meanings = (String) requestData.get("meanings");
+        int status = StateCode.FAIL;
 
         synchronized (dicServer.getDictionary()) {
             switch (command) {
-                case StateCode.QUERY:
+                case StateCode.QUERY -> {
                     String meaning = dicServer.getDictionary().get(word);
                     if (meaning != null) {
                         responseData.put("status", StateCode.SUCCESS);
+                        status = StateCode.SUCCESS;
                         responseData.put("meanings", meaning);
+                        responseData.put("word", word);
                     } else {
                         responseData.put("status", StateCode.NOT_FOUND);
                     }
-                    break;
-
-                case StateCode.ADD:
+                }
+                case StateCode.ADD -> {
                     if (!dicServer.getDictionary().containsKey(word)) {
                         if (meanings != null && !meanings.isEmpty()) {
                             dicServer.getDictionary().put(word, meanings);
                             saveDictionaryToFile();
                             responseData.put("status", StateCode.SUCCESS);
+                            status = StateCode.SUCCESS;
                         } else {
                             responseData.put("status", StateCode.EMPTY_MEANING);
                             responseData.put("message", "Meanings cannot be empty");
@@ -75,14 +82,35 @@ public class RequestHandlerThread extends Thread {
                     } else {
                         responseData.put("status", StateCode.DUPLICATE);
                     }
-                    break;
-
-                // Handle other commands (REMOVE, UPDATE) similarly
-
-                default:
+                }
+                case StateCode.REMOVE -> {
+                    if (dicServer.getDictionary().containsKey(word)) {
+                        dicServer.getDictionary().remove(word);
+                        saveDictionaryToFile();
+                        responseData.put("status", StateCode.SUCCESS);
+                        status = StateCode.SUCCESS;
+                    } else {
+                        responseData.put("status", StateCode.NOT_FOUND);
+                    }
+                }
+                case StateCode.UPDATE -> {
+                    if (dicServer.getDictionary().containsKey(word) && meanings != null && !meanings.isEmpty()) {
+                        dicServer.getDictionary().put(word, meanings);
+                        saveDictionaryToFile();
+                        responseData.put("status", StateCode.SUCCESS);
+                        status = StateCode.SUCCESS;
+                    } else {
+                        responseData.put("status", StateCode.NOT_FOUND);
+                    }
+                }
+                default -> {
                     responseData.put("status", StateCode.UNKNOWN);
                     responseData.put("message", "Unknown Error");
+                }
             }
+            System.out.println(StateCode.codeToWord[command]
+                    + " from " + clientSocket.getInetAddress()
+                    + " Status: " + StateCode.codeToWord[status]);
         }
 
         return responseData;

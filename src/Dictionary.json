@@ -1,8 +1,1 @@
-{
-  "apple" : "red",
-  "banana" : "yellow",
-  "pineapple" : "yellow",
-  "pear" : "green",
-  "watermelon" : "red",
-  "orange" : "orange"
-}
+{"banana":"yellow","orange":"orange","apple":"abc","pear":"green","pineapple":"yellow","watermelon":"red","elephant":"long nose"}
