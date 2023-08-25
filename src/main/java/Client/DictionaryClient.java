@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class DictionaryClient {
     private static String address = ""; // Change to server IP if needed
@@ -18,12 +19,56 @@ public class DictionaryClient {
              BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
              BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()))) {
 
-            JSONObject query = createQueryRequest(StateCode.QUERY, "apple", null);
-            sendRequest(writer, query);
+            Scanner scanner = new Scanner(System.in);
 
-            String response = reader.readLine();
-            JSONObject jsonResponse = (JSONObject) new JSONParser().parse(response);
-            processResponse(jsonResponse);
+            System.out.println("Choose an option:");
+            System.out.println("1. Query a word");
+            System.out.println("2. Add a word");
+            System.out.println("3. Remove a word");
+            System.out.println("4. Update a word");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            JSONObject request = new JSONObject();
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter the word to query: ");
+                    String wordToQuery = scanner.nextLine();
+                    request = createQueryRequest(StateCode.QUERY, wordToQuery, null);
+                    break;
+                case 2:
+                    System.out.print("Enter the word to add: ");
+                    String wordToAdd = scanner.nextLine();
+                    System.out.print("Enter the meanings: ");
+                    String meaningsToAdd = scanner.nextLine();
+                    request = createQueryRequest(StateCode.ADD, wordToAdd, meaningsToAdd);
+                    break;
+                case 3:
+                    System.out.print("Enter the word to remove: ");
+                    String wordToRemove = scanner.nextLine();
+                    request = createQueryRequest(StateCode.REMOVE, wordToRemove, null);
+                    break;
+                case 4:
+                    System.out.print("Enter the word to update: ");
+                    String wordToUpdate = scanner.nextLine();
+                    System.out.print("Enter the new meanings: ");
+                    String newMeanings = scanner.nextLine();
+                    request = createQueryRequest(StateCode.UPDATE, wordToUpdate, newMeanings);
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+
+            if (!request.isEmpty()) {
+                sendRequest(writer, request);
+
+                String response = reader.readLine();
+                JSONObject jsonResponse = (JSONObject) new JSONParser().parse(response);
+                processResponse(jsonResponse);
+            }
 
         } catch (IOException | ParseException e) {
             e.printStackTrace();
@@ -82,4 +127,3 @@ public class DictionaryClient {
 
     }
 }
-

@@ -46,7 +46,7 @@ public class RequestHandlerThread extends Thread {
         JSONObject requestData = (JSONObject) jsonParser.parse(request);
         JSONObject responseData = new JSONObject();
 
-        int command = (int) requestData.get("command");
+        int command = Integer.parseInt(requestData.get("command").toString());
         String word = (String) requestData.get("word");
         String meanings = (String) requestData.get("meanings");
 
