@@ -33,7 +33,18 @@ public class DictionaryClientGUI {
         searchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                String word = inputArea.getText();
+                if (isOnlyChar(word) && !word.isEmpty()) {
+                    try {
+                        String meaning = dictionaryClient.queryWord(word);
+                        resultArea.setText(meaning);
+                    } catch (IOException | ParseException ex) {
+                        ex.printStackTrace();
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Invalid input. Word must contain only letters and meanings cannot be empty.",
+                            "Invalid Input", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
         addButton.addActionListener(new ActionListener() {

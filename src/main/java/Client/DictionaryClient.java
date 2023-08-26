@@ -9,7 +9,8 @@ import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DictionaryClient {
     private static String address = ""; // Change to server IP if needed
@@ -34,20 +35,50 @@ public class DictionaryClient {
         }
 
     }
+    private List<String> sendRequest(JSONObject request) {
+        List<String> responseList = new ArrayList<>();
+        try {
+            writer.write(request.toJSONString() + "\n");
+            writer.flush();
+            String response = reader.readLine();
+            JSONObject jsonResponse = (JSONObject) new JSONParser().parse(response);
+            responseList = processResponse(jsonResponse);
+        } catch (IOException | ParseException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "An error occurred while sending the request.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return responseList;
+    }
 
+    public void addWord(String word, String meanings) throws IOException, ParseException {
+        JSONObject request = new JSONObject();
+        request.put("command", StateCode.ADD);
+        request.put("word", word);
+        request.put("meanings", meanings);
+        sendRequest(request);
+    }
+
+    public String queryWord(String word) throws IOException, ParseException{
+        JSONObject request = new JSONObject();
+        request.put("command", StateCode.QUERY);
+        request.put("word", word);
+        String meaning = sendRequest(request).get(1);;
+        return meaning;
+    }
     public static void main(String[] args) {
         validation(args);
         DictionaryClient dictionaryClient = new DictionaryClient();
     }
 
 
-    private static void processResponse(JSONObject response) {
+    private List<String> processResponse(JSONObject response) {
+        List<String> responseList = new ArrayList<>();
         int status = Integer.parseInt(response.get("status").toString());
         switch (status) {
             case StateCode.SUCCESS:
                 System.out.println("Operation successful");
                 // Handle success response based on the command
-                handleSuccess(response);
+                responseList = handleSuccess(response);
                 break;
             case StateCode.FAIL:
                 System.out.println("Operation failed");
@@ -67,9 +98,11 @@ public class DictionaryClient {
             default:
                 System.out.println("Unexpected response status");
         }
+        return responseList;
     }
 
-    private static void handleSuccess(JSONObject response) {
+    private List<String> handleSuccess(JSONObject response) {
+        List<String> responseList = new ArrayList<>();
         int command = Integer.parseInt(response.get("command").toString());
         switch (command) {
             case StateCode.QUERY:
@@ -77,6 +110,8 @@ public class DictionaryClient {
                 String meanings = response.get("meanings").toString();
                 System.out.println("Word: " + word);
                 System.out.println("Meanings: " + meanings);
+                responseList.add(word);
+                responseList.add(meanings);
                 break;
             case StateCode.ADD:
                 System.out.println("Word added successfully");
@@ -91,6 +126,7 @@ public class DictionaryClient {
             default:
                 System.out.println("Operation successful");
         }
+        return responseList;
     }
 
 
@@ -114,26 +150,7 @@ public class DictionaryClient {
         }
 
     }
-    public void addWord(String word, String meanings) throws IOException, ParseException {
-        JSONObject request = new JSONObject();
-        request.put("command", StateCode.ADD);
-        request.put("word", word);
-        request.put("meanings", meanings);
-        sendRequest(request);
-    }
 
-    private void sendRequest(JSONObject request) {
-        try {
-            writer.write(request.toJSONString() + "\n");
-            writer.flush();
-            String response = reader.readLine();
-            JSONObject jsonResponse = (JSONObject) new JSONParser().parse(response);
-            processResponse(jsonResponse);
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "An error occurred while sending the request.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
     public BufferedReader getReader() {
         return reader;
     }
