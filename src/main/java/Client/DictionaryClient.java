@@ -18,10 +18,11 @@ public class DictionaryClient {
     private BufferedReader reader;
     private BufferedWriter writer;
     private DictionaryClientGUI gui;
+    private Socket socket;
 
     public DictionaryClient() {
         try {
-            Socket socket = new Socket(address, serverPort);
+            socket = new Socket(address, serverPort);
             this.reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
@@ -49,7 +50,6 @@ public class DictionaryClient {
         }
         return responseList;
     }
-
     public void addWord(String word, String meanings) throws IOException, ParseException {
         JSONObject request = new JSONObject();
         request.put("command", StateCode.ADD);
@@ -57,13 +57,30 @@ public class DictionaryClient {
         request.put("meanings", meanings);
         sendRequest(request);
     }
-
     public String queryWord(String word) throws IOException, ParseException{
         JSONObject request = new JSONObject();
         request.put("command", StateCode.QUERY);
         request.put("word", word);
-        String meaning = sendRequest(request).get(1);;
-        return meaning;
+        List<String> responseList = sendRequest(request);
+        if (responseList.size() == 0) {
+            return null;
+        } else {
+            return responseList.get(1);
+        }
+    }
+    public void removeWord(String word) throws IOException, ParseException{
+        JSONObject request = new JSONObject();
+        request.put("command", StateCode.REMOVE);
+        request.put("word", word);
+        sendRequest(request);
+    }
+
+    public void updateWord(String word, String newMeanings) throws IOException, ParseException{
+        JSONObject request = new JSONObject();
+        request.put("command", StateCode.UPDATE);
+        request.put("word", word);
+        request.put("meanings", newMeanings);
+        sendRequest(request);
     }
     public static void main(String[] args) {
         validation(args);
@@ -154,8 +171,10 @@ public class DictionaryClient {
     public BufferedReader getReader() {
         return reader;
     }
-
     public BufferedWriter getWriter() {
         return writer;
+    }
+    public Socket getSocket() {
+        return socket;
     }
 }
