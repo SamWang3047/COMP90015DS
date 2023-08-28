@@ -18,7 +18,7 @@ public class DictionaryServer {
     private static Map<String, String> dictionary = new HashMap<>();
     private static String dicPath = "";
     private static int port = 0;
-    private static final String DEFAULT_DICTIONARY_PATH = "src/Dictionary.json";
+    private static final String DEFAULT_DICTIONARY_PATH = "Dictionary.json";
 
     private void run(String[] args) {
         validation(args);

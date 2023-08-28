@@ -3,17 +3,19 @@
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
       <artifact name="COMP90015DS:jar" />
+      <artifact name="COMP90015DS:jar2" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Tested">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/COMP90015DS_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/COMP90015DS_jar2.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
+    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Tested 2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar/DictionaryServer.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar/DictionaryServer.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar2/DictionaryClient.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar2/DictionaryClient.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server/DictionaryServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/DictionaryServer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -165,7 +167,7 @@
       <updated>1692859998287</updated>
       <workItem from="1692859999551" duration="39999000" />
       <workItem from="1693189139511" duration="3184000" />
-      <workItem from="1693192339405" duration="97000" />
+      <workItem from="1693192339405" duration="1121000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1692861614607</created>
@@ -237,7 +239,14 @@
       <option name="project" value="LOCAL" />
       <updated>1693190518695</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Tested 2">
+      <created>1693192764853</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1693192764853</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -265,7 +274,8 @@
     <MESSAGE value="GUI query" />
     <MESSAGE value="No test" />
     <MESSAGE value="Tested" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tested" />
+    <MESSAGE value="Tested 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tested 2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

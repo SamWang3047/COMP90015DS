@@ -68,7 +68,7 @@ public class DictionaryClient {
         request.put("word", word);
         List<String> responseList = sendRequest(request);
         if (Integer.parseInt(responseList.get(0)) == StateCode.SUCCESS) {
-            return responseList.get(1);
+            return responseList.get(2);
         } else {
             return null;
         }
