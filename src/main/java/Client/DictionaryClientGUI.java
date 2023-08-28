@@ -7,7 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class DictionaryClientGUI {
@@ -41,19 +44,28 @@ public class DictionaryClientGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String word = inputArea.getText().trim();
+                StringBuilder sb = new StringBuilder();
                 if (isOnlyChar(word) && !word.isEmpty()) {
                     try {
                         String meaning = dictionaryClient.queryWord(word);
                         if (meaning != null) {
                             resultArea.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
+                            sb.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
                             resultArea.append(printTitle(StateCode.QUERY,StateCode.SUCCESS)+ "\n");
+                            sb.append(printTitle(StateCode.QUERY,StateCode.SUCCESS)+ "\n");
                             resultArea.append("-Word: " + word + "\n");
+                            sb.append("-Word: " + word + "\n");
                             resultArea.append("-Meaning: " + meaning+ "\n\n");
+                            sb.append("-Meaning: " + meaning+ "\n\n");
                         } else {
                             resultArea.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
                             resultArea.append(printTitle(StateCode.QUERY,StateCode.FAIL)+ "\n");
                             resultArea.append("There is no such word in dictionary." + "\n\n");
+                            sb.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
+                            sb.append(printTitle(StateCode.QUERY,StateCode.FAIL)+ "\n");
+                            sb.append("There is no such word in dictionary." + "\n\n");
                         }
+                        logClientBehavior(sb.toString());
                     } catch (IOException | ParseException ex) {
                         JOptionPane.showMessageDialog(null, "Error searching word: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         printTitle(StateCode.QUERY,StateCode.FAIL);
@@ -70,19 +82,25 @@ public class DictionaryClientGUI {
             public void actionPerformed(ActionEvent e) {
                 String word = inputArea.getText().trim();
                 String meanings = meaningArea.getText().trim();
+                StringBuilder sb = new StringBuilder();
                 if (isOnlyChar(word) && !meanings.isEmpty()) {
                     try {
                         boolean success = dictionaryClient.addWord(word, meanings);
                         resultArea.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
+                        sb.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
                         if (success) {
                             resultArea.append(printTitle(StateCode.ADD,StateCode.SUCCESS)+ "\n\n");
+                            sb.append(printTitle(StateCode.ADD,StateCode.SUCCESS)+ "\n\n");
                         } else {
                             resultArea.append(printTitle(StateCode.ADD,StateCode.FAIL)+ "\n");
+                            sb.append(printTitle(StateCode.ADD,StateCode.FAIL)+ "\n");
                             resultArea.append("Word: \"" + word + "\" already exist!" + "\n\n");
+                            sb.append("Word: \"" + word + "\" already exist!" + "\n\n");
                         }
                     } catch (IOException | ParseException ex) {
                         ex.printStackTrace();
                     }
+                    logClientBehavior(sb.toString());
                 } else {
                     JOptionPane.showMessageDialog(null, "Invalid input. Word must contain only letters and meanings cannot be empty.",
                             "Invalid Input", JOptionPane.ERROR_MESSAGE);
@@ -93,16 +111,22 @@ public class DictionaryClientGUI {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String word = inputArea.getText().trim();
+                StringBuilder sb = new StringBuilder();
                 if (isOnlyChar(word) && !word.isEmpty()) {
                     try {
                         boolean success = dictionaryClient.removeWord(word);
                         resultArea.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
+                        sb.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
                         if (success) {
                             resultArea.append(printTitle(StateCode.REMOVE, StateCode.SUCCESS) + "\n\n");
+                            sb.append(printTitle(StateCode.REMOVE, StateCode.SUCCESS) + "\n\n");
                         } else {
                             resultArea.append(printTitle(StateCode.REMOVE, StateCode.FAIL) + "\n");
                             resultArea.append("There is no such word in dictionary." + "\n\n");
+                            sb.append(printTitle(StateCode.REMOVE, StateCode.FAIL) + "\n");
+                            sb.append("There is no such word in dictionary." + "\n\n");
                         }
+                        logClientBehavior(sb.toString());
                     } catch (IOException | ParseException ex) {
                         JOptionPane.showMessageDialog(null, "Error removing word: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         printTitle(StateCode.REMOVE, StateCode.FAIL);
@@ -118,11 +142,15 @@ public class DictionaryClientGUI {
             public void actionPerformed(ActionEvent e) {
                 String word = inputArea.getText().trim();
                 String newMeanings = meaningArea.getText().trim();
+                StringBuilder sb = new StringBuilder();
                 if (isOnlyChar(word) && !newMeanings.isEmpty()) {
                     try {
                         dictionaryClient.updateWord(word, newMeanings);
                         resultArea.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
                         resultArea.append(printTitle(StateCode.UPDATE, StateCode.SUCCESS) + "\n\n");
+                        sb.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
+                        sb.append(printTitle(StateCode.UPDATE, StateCode.SUCCESS) + "\n\n");
+                        logClientBehavior(sb.toString());
                     } catch (IOException | ParseException ex) {
                         JOptionPane.showMessageDialog(null, "Error updating word: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         printTitle(StateCode.UPDATE, StateCode.FAIL);
@@ -139,6 +167,7 @@ public class DictionaryClientGUI {
             public void actionPerformed(ActionEvent e) {
                 int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to quit?", "Quit Confirmation", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
+                    logClientBehavior("User Quit");
                     System.exit(0); // Close the application
                 }
             }
@@ -154,5 +183,20 @@ public class DictionaryClientGUI {
         sb.append("-Command: " + StateCode.codeToWord[commandCode] + "   ");
         sb.append(StateCode.codeToWord[stateCode]);
         return sb.toString();
+    }
+
+    private void logClientBehavior(String str) {
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            String timestamp = now.format(formatter);
+
+            String logEntry = timestamp + "\n" + str + "\n";
+            FileWriter writer = new FileWriter("client_log.txt", true); // Append to the log file
+            writer.write(logEntry);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

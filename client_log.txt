@@ -1,0 +1,21 @@
+2023-08-28 22:59:47
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
+2023-08-28 22:59:52
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
+2023-08-28 22:59:53
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
