@@ -10,6 +10,7 @@ import java.io.*;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class DictionaryClient {
@@ -39,7 +40,10 @@ public class DictionaryClient {
     private List<String> sendRequest(JSONObject request) {
         List<String> responseList = new ArrayList<>();
         try {
-            writer.write(request.toJSONString() + "\n");
+            String requestString = request.toJSONString();
+            String encodedString = Base64.getEncoder().encodeToString(requestString.getBytes());
+            System.out.println(encodedString);
+            writer.write(encodedString + "\n");
             writer.flush();
             String response = reader.readLine();
             JSONObject jsonResponse = (JSONObject) new JSONParser().parse(response);

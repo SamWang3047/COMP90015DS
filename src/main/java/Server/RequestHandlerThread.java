@@ -7,6 +7,7 @@ import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -28,8 +29,11 @@ public class RequestHandlerThread extends Thread {
                 BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))
         ) {
             while (true) {
-                String request = reader.readLine();
-                JSONObject response = processRequest(request);
+                String encodedRequest = reader.readLine();
+                byte[] decodedBytes = Base64.getDecoder().decode(encodedRequest);
+                String decodedString = new String(decodedBytes);
+                System.out.println(decodedString);
+                JSONObject response = processRequest(decodedString);
 
                 writer.write(response.toJSONString() + "\n");
                 writer.flush();
