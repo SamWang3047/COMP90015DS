@@ -54,7 +54,7 @@ public class DictionaryClientGUI {
                         } else {
                             resultArea.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
                             resultArea.append(printTitle(StateCode.QUERY,StateCode.FAIL)+ "\n");
-                            resultArea.append("Can not find that word" + "\n\n");
+                            resultArea.append("There is no such word in dictionary." + "\n\n");
                         }
                     } catch (IOException | ParseException ex) {
                         JOptionPane.showMessageDialog(null, "Error searching word: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -74,9 +74,14 @@ public class DictionaryClientGUI {
                 String meanings = meaningArea.getText().trim();
                 if (isOnlyChar(word) && !meanings.isEmpty()) {
                     try {
-                        dictionaryClient.addWord(word, meanings);
+                        boolean success = dictionaryClient.addWord(word, meanings);
                         resultArea.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
-                        resultArea.append(printTitle(StateCode.ADD,StateCode.SUCCESS)+ "\n\n");
+                        if (success) {
+                            resultArea.append(printTitle(StateCode.ADD,StateCode.SUCCESS)+ "\n\n");
+                        } else {
+                            resultArea.append(printTitle(StateCode.ADD,StateCode.FAIL)+ "\n");
+                            resultArea.append("Word: \"" + word + "\" already exist!" + "\n\n");
+                        }
                     } catch (IOException | ParseException ex) {
                         ex.printStackTrace();
                     }
@@ -92,9 +97,14 @@ public class DictionaryClientGUI {
                 String word = inputArea.getText().trim();
                 if (isOnlyChar(word) && !word.isEmpty()) {
                     try {
-                        dictionaryClient.removeWord(word);
+                        boolean success = dictionaryClient.removeWord(word);
                         resultArea.append("From " + dictionaryClient.getSocket().getInetAddress().toString() + "\n");
-                        resultArea.append(printTitle(StateCode.REMOVE, StateCode.SUCCESS) + "\n\n");
+                        if (success) {
+                            resultArea.append(printTitle(StateCode.REMOVE, StateCode.SUCCESS) + "\n\n");
+                        } else {
+                            resultArea.append(printTitle(StateCode.REMOVE, StateCode.FAIL) + "\n");
+                            resultArea.append("There is no such word in dictionary." + "\n\n");
+                        }
                     } catch (IOException | ParseException ex) {
                         JOptionPane.showMessageDialog(null, "Error removing word: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                         printTitle(StateCode.REMOVE, StateCode.FAIL);

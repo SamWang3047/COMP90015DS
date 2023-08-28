@@ -54,29 +54,31 @@ public class DictionaryClient {
         }
         return responseList;
     }
-    public void addWord(String word, String meanings) throws IOException, ParseException {
+    public boolean addWord(String word, String meanings) throws IOException, ParseException {
         JSONObject request = new JSONObject();
         request.put("command", StateCode.ADD);
         request.put("word", word);
         request.put("meanings", meanings);
-        sendRequest(request);
+        List<String> responseList =  sendRequest(request);
+        return Integer.parseInt(responseList.get(0)) == StateCode.SUCCESS;
     }
     public String queryWord(String word) throws IOException, ParseException{
         JSONObject request = new JSONObject();
         request.put("command", StateCode.QUERY);
         request.put("word", word);
         List<String> responseList = sendRequest(request);
-        if (responseList.size() == 0) {
-            return null;
-        } else {
+        if (Integer.parseInt(responseList.get(0)) == StateCode.SUCCESS) {
             return responseList.get(1);
+        } else {
+            return null;
         }
     }
-    public void removeWord(String word) throws IOException, ParseException{
+    public boolean removeWord(String word) throws IOException, ParseException{
         JSONObject request = new JSONObject();
         request.put("command", StateCode.REMOVE);
         request.put("word", word);
-        sendRequest(request);
+        List<String> responseList = sendRequest(request);
+        return Integer.parseInt(responseList.get(0)) == StateCode.SUCCESS;
     }
 
     public void updateWord(String word, String newMeanings) throws IOException, ParseException{
@@ -104,19 +106,24 @@ public class DictionaryClient {
             case StateCode.FAIL:
                 System.out.println("Operation failed");
                 String message = response.get("message").toString();
+                responseList.add(String.valueOf(StateCode.FAIL));
                 System.out.println("Error message: " + message);
                 break;
             case StateCode.NOT_FOUND:
+                responseList.add(String.valueOf(StateCode.FAIL));
                 System.out.println("Word not found");
                 break;
             case StateCode.DUPLICATE:
                 System.out.println("Word already exists");
+                responseList.add(String.valueOf(StateCode.FAIL));
                 break;
             case StateCode.EMPTY_MEANING:
                 System.out.println("Meanings cannot be empty");
+                responseList.add(String.valueOf(StateCode.FAIL));
                 break;
             // Handle other response statuses as needed
             default:
+                responseList.add(String.valueOf(StateCode.FAIL));
                 System.out.println("Unexpected response status");
         }
         return responseList;
@@ -136,12 +143,15 @@ public class DictionaryClient {
                 break;
             case StateCode.ADD:
                 System.out.println("Word added successfully");
+                responseList.add(String.valueOf(StateCode.SUCCESS));
                 break;
             case StateCode.REMOVE:
                 System.out.println("Word removed successfully");
+                responseList.add(String.valueOf(StateCode.SUCCESS));
                 break;
             case StateCode.UPDATE:
                 System.out.println("Word meanings updated successfully");
+                responseList.add(String.valueOf(StateCode.SUCCESS));
                 break;
             // Handle other success responses as needed
             default:
