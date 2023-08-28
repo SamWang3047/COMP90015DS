@@ -138,6 +138,7 @@ public class DictionaryClient {
                 String meanings = response.get("meanings").toString();
                 System.out.println("Word: " + word);
                 System.out.println("Meanings: " + meanings);
+                responseList.add(String.valueOf(StateCode.SUCCESS));
                 responseList.add(word);
                 responseList.add(meanings);
                 break;

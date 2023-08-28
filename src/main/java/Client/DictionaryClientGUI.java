@@ -30,8 +30,6 @@ public class DictionaryClientGUI {
 
     public void init() {
         JFrame frame = new JFrame("DictionaryClient");
-
-
         frame.setContentPane(dictionaryPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
