@@ -70,6 +70,7 @@ public class DictionaryServer {
         // if the dictionary file path is not valid, the path will be set into a default value and a new dictionary will be created.
         if (!file.exists() || !file.canRead()) {
             System.err.println("Error: Invalid dictionary file path");
+            System.out.println("A new empty dictionary has been created");
             dicPath = DEFAULT_DICTIONARY_PATH;
             createEmptyDictionaryFile();
         }
