@@ -1,5 +1,6 @@
 package Server;
 
+// Author: Zhiyuan Wang, StudentID: 1406985,  COMP90015
 public class StateCode {
     public final static String[] codeToWord = {"QUERY", "ADD", "REMOVE", "UPDATE", "SUCCESS", "FAIL"};
     public final static int QUERY = 0;

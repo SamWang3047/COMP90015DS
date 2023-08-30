@@ -19,3 +19,108 @@ From localhost/127.0.0.1
 -Meaning: red
 
 
+2023-08-30 14:17:08
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
+2023-08-30 14:17:11
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
+2023-08-30 14:17:12
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
+2023-08-30 14:17:22
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: banana
+-Meaning: yellow
+
+
+2023-08-30 14:17:27
+From localhost/127.0.0.1
+-Command: REMOVE   SUCCESS
+
+
+2023-08-30 14:17:31
+From localhost/127.0.0.1
+-Command: ADD   SUCCESS
+
+
+2023-08-30 14:17:32
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: banana
+-Meaning: yellow
+
+
+2023-08-30 15:49:48
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
+2023-08-30 15:49:48
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
+2023-08-30 15:49:54
+From localhost/127.0.0.1
+-Command: REMOVE   SUCCESS
+
+
+2023-08-30 15:49:56
+From localhost/127.0.0.1
+-Command: QUERY   FAIL
+There is no such word in dictionary.
+
+
+2023-08-30 15:50:05
+From localhost/127.0.0.1
+-Command: ADD   SUCCESS
+
+
+2023-08-30 15:50:07
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: red
+
+
+2023-08-30 15:50:16
+From localhost/127.0.0.1
+-Command: UPDATE   SUCCESS
+
+
+2023-08-30 15:50:20
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: !!
+
+
+2023-08-30 15:50:21
+From localhost/127.0.0.1
+-Command: QUERY   SUCCESS
+-Word: apple
+-Meaning: !!
+
+
+2023-08-30 15:50:25
+User Quit
+2023-08-30 15:50:27
+User Quit

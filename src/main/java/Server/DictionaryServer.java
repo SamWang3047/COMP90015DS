@@ -13,13 +13,15 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-
+// Author: Zhiyuan Wang, StudentID: 1406985,  COMP90015
 public class DictionaryServer {
     private static Map<String, String> dictionary = new HashMap<>();
     private static String dicPath = "";
     private static int port = 0;
     private static final String DEFAULT_DICTIONARY_PATH = "Dictionary.json";
-
+    /**
+     * Run the server, create a thread pool and then keep listening the port for client
+     */
     private void run(String[] args) {
         validation(args);
         loadDictionaryFromFile(dicPath);
@@ -46,6 +48,10 @@ public class DictionaryServer {
         }
     }
 
+    /**
+     * Check the input arguments
+     * @param args the user input
+     */
     private void validation(String[] args) {
         if (args.length < 2) {
             System.err.println("Usage: java -jar <port> <filepath>");
@@ -75,6 +81,11 @@ public class DictionaryServer {
             createEmptyDictionaryFile();
         }
     }
+
+    /**
+     * Load dictionary file from local machine
+     * @param dicPath
+     */
     private void loadDictionaryFromFile(String dicPath) {
         JSONParser parser = new JSONParser();
         try {
@@ -94,6 +105,9 @@ public class DictionaryServer {
         }
     }
 
+    /**
+     * If the argument that user input file path is not valid, create one empty dictionary file instead
+     */
     private void createEmptyDictionaryFile() {
         try (FileWriter fileWriter = new FileWriter(dicPath)) {
             fileWriter.write("{}"); // An empty JSON object

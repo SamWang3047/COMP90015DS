@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-
+// Author: Zhiyuan Wang, StudentID: 1406985,  COMP90015
 public class DictionaryClient {
     private static String address = ""; // Change to server IP if needed
     private static int serverPort = 0; // Change to server port if needed
@@ -39,6 +39,12 @@ public class DictionaryClient {
         }
 
     }
+
+    /**
+     * Send the request from client side, according the user's input from GUI
+     * @param request the user request
+     * @return response information String list
+     */
     private List<String> sendRequest(JSONObject request) {
         List<String> responseList = new ArrayList<>();
         try {
@@ -95,7 +101,11 @@ public class DictionaryClient {
         DictionaryClient dictionaryClient = new DictionaryClient();
     }
 
-
+    /**
+     * process the response from server
+     * @param response the response the client received from server
+     * @return the response String list contains server response
+     */
     private List<String> processResponse(JSONObject response) {
         List<String> responseList = new ArrayList<>();
         int status = Integer.parseInt(response.get("status").toString());
@@ -131,6 +141,11 @@ public class DictionaryClient {
         return responseList;
     }
 
+    /**
+     * If the request is handled successfully, this method is called
+     * @param response the response from server
+     * @return the response string list from server
+     */
     private List<String> handleSuccess(JSONObject response) {
         List<String> responseList = new ArrayList<>();
         int command = Integer.parseInt(response.get("command").toString());

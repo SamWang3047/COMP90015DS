@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-
+// Author: Zhiyuan Wang, StudentID: 1406985,  COMP90015
 public class RequestHandlerThread extends Thread {
     private Socket clientSocket;
     private DictionaryServer dicServer;
@@ -49,6 +49,12 @@ public class RequestHandlerThread extends Thread {
         }
     }
 
+    /**
+     *
+     * @param request the request received from client
+     * @return JSONObject the response from server
+     * @throws ParseException
+     */
     private JSONObject processRequest(String request) throws ParseException {
         JSONObject requestData = (JSONObject) jsonParser.parse(request);
         JSONObject responseData = new JSONObject();
@@ -122,6 +128,7 @@ public class RequestHandlerThread extends Thread {
 
     private void saveDictionaryToFile() {
         JSONObject jsonObject = new JSONObject();
+        //synchronized lock
         synchronized (dictionaryLock) {
             for (String word : dicServer.getDictionary().keySet()) {
                 jsonObject.put(word, dicServer.getDictionary().get(word));

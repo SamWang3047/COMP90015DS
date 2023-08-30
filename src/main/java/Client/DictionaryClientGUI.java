@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-
+// Author: Zhiyuan Wang, StudentID: 1406985,  COMP90015
 public class DictionaryClientGUI {
     private DictionaryClient dictionaryClient;
     private JTextArea resultArea;
@@ -184,6 +184,11 @@ public class DictionaryClientGUI {
         sb.append(StateCode.codeToWord[stateCode]);
         return sb.toString();
     }
+
+    /**
+     * Store the log of user input and the result from server. User can get this file to check their use history
+     * @param str the user action
+     */
 
     private void logClientBehavior(String str) {
         try {
