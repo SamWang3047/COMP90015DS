@@ -1,6 +1,5 @@
-package Server;
+package Assignment1.Server;
 
-import com.sun.jdi.request.StepRequest;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -8,8 +7,7 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.Socket;
 import java.util.Base64;
-import java.util.List;
-import java.util.Map;
+
 // Author: Zhiyuan Wang, StudentID: 1406985,  COMP90015
 public class RequestHandlerThread extends Thread {
     private Socket clientSocket;

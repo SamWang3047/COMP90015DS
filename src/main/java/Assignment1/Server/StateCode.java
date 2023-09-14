@@ -1,4 +1,4 @@
-package Server;
+package Assignment1.Server;
 
 // Author: Zhiyuan Wang, StudentID: 1406985,  COMP90015
 public class StateCode {

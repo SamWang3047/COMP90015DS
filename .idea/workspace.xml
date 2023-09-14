@@ -2,18 +2,15 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="COMP90015DS:jar" />
+      <artifact name="COMP90015DS:jar2" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Tested 3">
+    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Add documents and end">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar/Dictionary.json" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar/Dictionary.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar/DictionaryServer.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar/DictionaryServer.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/META-INF/MANIFEST.MF" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +26,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -61,26 +59,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/samwang/IdeaProjects/COMP90015DS/out/artifacts/COMP90015DS_jar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Artifacts",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/samwang/IdeaProjects/COMP90015DS/out/artifacts/COMP90015DS_jar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/out/artifacts/COMP90015DS_jar" />
@@ -166,6 +164,11 @@
       <workItem from="1692859999551" duration="39999000" />
       <workItem from="1693189139511" duration="3184000" />
       <workItem from="1693192339405" duration="2468000" />
+      <workItem from="1693368968191" duration="6957000" />
+      <workItem from="1693388386285" duration="596000" />
+      <workItem from="1694067828839" duration="126000" />
+      <workItem from="1694132475463" duration="635000" />
+      <workItem from="1694660873338" duration="940000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1692861614607</created>
@@ -258,7 +261,28 @@
       <option name="project" value="LOCAL" />
       <updated>1693198788343</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Tested 5 add log function">
+      <created>1693227704865</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1693227704865</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Add documents and end">
+      <created>1693377177605</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1693377177605</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Add documents and end">
+      <created>1694660945682</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1694660945682</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,7 +312,9 @@
     <MESSAGE value="Tested" />
     <MESSAGE value="Tested 2" />
     <MESSAGE value="Tested 3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Tested 3" />
+    <MESSAGE value="Tested 5 add log function" />
+    <MESSAGE value="Add documents and end" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add documents and end" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -299,7 +325,7 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/Server/DictionaryServer.java</url>
-          <line>22</line>
+          <line>24</line>
           <properties class="Server.DictionaryServer" method="run">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -308,7 +334,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/Client/DictionaryClient.java</url>
-          <line>90</line>
+          <line>98</line>
           <properties class="Client.DictionaryClient" method="main">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -317,7 +343,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/Client/DictionaryClient.java</url>
-          <line>23</line>
+          <line>25</line>
           <properties class="Client.DictionaryClient" method="&lt;init&gt;">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -326,7 +352,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/Client/DictionaryClientGUI.java</url>
-          <line>30</line>
+          <line>33</line>
           <properties class="Client.DictionaryClientGUI" method="init">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
@@ -335,5 +361,9 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

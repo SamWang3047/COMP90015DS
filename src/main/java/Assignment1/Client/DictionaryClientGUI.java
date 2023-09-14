@@ -1,10 +1,9 @@
-package Client;
+package Assignment1.Client;
 
-import Server.StateCode;
+import Assignment1.Server.StateCode;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileWriter;
