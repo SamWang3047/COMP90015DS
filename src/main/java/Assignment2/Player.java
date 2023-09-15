@@ -1,5 +1,8 @@
 package Assignment2;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -10,6 +13,7 @@ public class Player extends Thread {
     PrintWriter out;
     BufferedReader in;
     private String name;
+    private JSONParser parser = new JSONParser();
 
     public Player(Socket socket) {
         this.socket = socket;
@@ -21,8 +25,15 @@ public class Player extends Thread {
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
 
-            name = in.readLine();
-            out.println("Welcome " + name + "! Waiting for another player...");
+            // Read the name from a JSON message
+            JSONObject json = (JSONObject) parser.parse(in.readLine());
+            name = (String) json.get("username");
+            System.out.println(name);
+
+            // Send a welcome message in JSON format
+            JSONObject welcomeMessage = new JSONObject();
+            welcomeMessage.put("message", "Welcome " + name + "! Waiting for another player...");
+            out.println(welcomeMessage.toJSONString());
 
             TicTacToeServer.waitingPlayers.add(this);
 

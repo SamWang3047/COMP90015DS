@@ -7,7 +7,7 @@ import org.json.simple.parser.ParseException;
 import java.io.*;
 import java.net.Socket;
 
-public class Client extends Thread {
+public class Client {
     private String serverAddress = ""; // Change to server IP if needed
     private int serverPort = 0; // Change to server port if needed
     private String username;
@@ -22,9 +22,9 @@ public class Client extends Thread {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
         clientGUI = new ClientGUI();
+        clientGUI.init();
     }
 
-    @Override
     public void run() {
         try {
             socket = new Socket(serverAddress, serverPort);
@@ -73,6 +73,6 @@ public class Client extends Thread {
         }
 
         Client client = new Client(username, address, port);
-        client.start();
+        client.run();
     }
 }
