@@ -25,6 +25,10 @@ public class ClientGUI {
     private JLabel timer;
 
     public ClientGUI() {
+        // Initialize the game board to be empty and display "Finding Player" message
+        initializeBoard();
+        playerTurn.setText("Finding Player");
+
         // Quit button functionality
         quitButton.addActionListener(new ActionListener() {
             @Override
@@ -54,7 +58,19 @@ public class ClientGUI {
         button9.addActionListener(gameButtonListener);
     }
 
-    public static void main(String[] args) {
+    private void initializeBoard() {
+        button1.setText("-");
+        button2.setText("-");
+        button3.setText("-");
+        button4.setText("-");
+        button5.setText("-");
+        button6.setText("-");
+        button7.setText("-");
+        button8.setText("-");
+        button9.setText("-");
+    }
+
+    public void init() {
         JFrame frame = new JFrame("ClientGUI");
         frame.setContentPane(new ClientGUI().gamePanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

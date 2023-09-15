@@ -1,5 +1,11 @@
 package Assignment2;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.IOException;
+
 public class Game extends Thread {
     private Player player1;
     private Player player2;
@@ -19,15 +25,20 @@ public class Game extends Thread {
 
     @Override
     public void run() {
-        player1.out.println("START");
-        player2.out.println("START");
+        player1.out.println(createJsonMessage("status", "START"));
+        player2.out.println(createJsonMessage("status", "START"));
         while (true) {
             // Handle game logic, communication between players, and checking for win conditions
             if (checkWin()) {
                 // Inform players about the winner and break out of the loop
+                String winnerMessage = currentPlayerMark + " wins!";
+                player1.out.println(createJsonMessage("status", winnerMessage));
+                player2.out.println(createJsonMessage("status", winnerMessage));
                 break;
             } else if (checkDraw()) {
                 // Inform players about the draw and break out of the loop
+                player1.out.println(createJsonMessage("status", "Draw"));
+                player2.out.println(createJsonMessage("status", "Draw"));
                 break;
             }
             switchPlayer();
@@ -75,6 +86,35 @@ public class Game extends Thread {
     private void switchPlayer() {
         currentPlayerMark = (currentPlayerMark == 'X') ? 'O' : 'X';
     }
+    private String createJsonMessage(String key, String value) {
+        JSONObject json = new JSONObject();
+        json.put(key, value);
+        return json.toJSONString();
+    }
+
+    private void handlePlayerMove(Player player) {
+        try {
+            String message = player.in.readLine(); // Assuming 'in' is a BufferedReader in the Player class
+            JSONObject json = (JSONObject) new JSONParser().parse(message);
+            String action = (String) json.get("action");
+            if ("move".equals(action)) {
+                int row = ((Long) json.get("row")).intValue();
+                int col = ((Long) json.get("col")).intValue();
+                makeMove(row, col);
+            }
+        } catch (ParseException | IOException e) {
+            e.printStackTrace();
+            // Handle exceptions (e.g., player disconnection)
+        }
+    }
+
+    private void makeMove(int row, int col) {
+        if (board[row][col] == '-') {
+            board[row][col] = currentPlayerMark;
+        }
+        // You can also add checks to ensure the move is valid
+    }
+
 }
 
 

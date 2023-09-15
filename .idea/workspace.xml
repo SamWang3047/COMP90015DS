@@ -9,11 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 basic architecture">
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 day 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.form" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/TicTacToeServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/TicTacToeServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +90,21 @@
       <recent name="$PROJECT_DIR$/src" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.ClientGUI">
+  <component name="RunManager" selected="Application.Client">
+    <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Assignment2.Client" />
+      <module name="COMP90015DS" />
+      <option name="PROGRAM_PARAMETERS" value="Sam localhost 10240" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Assignment2.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="ClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Assignment2.ClientGUI" />
       <module name="COMP90015DS" />
@@ -106,19 +122,6 @@
       <option name="MAIN_CLASS_NAME" value="Client.DictionaryClient" />
       <module name="COMP90015DS" />
       <option name="PROGRAM_PARAMETERS" value="localhost 20240" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="Client.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DictionaryClientGUI" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="Client.DictionaryClientGUI" />
-      <module name="COMP90015DS" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="Client.*" />
@@ -170,19 +173,19 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.Client" />
       <item itemvalue="Application.ClientGUI" />
       <item itemvalue="Application.TicTacToeGUI" />
-      <item itemvalue="Application.DictionaryClientGUI" />
       <item itemvalue="Application.DictionaryClient" />
       <item itemvalue="Application.DictionaryServer" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Client" />
         <item itemvalue="Application.ClientGUI" />
         <item itemvalue="Application.TicTacToeGUI" />
         <item itemvalue="Application.DictionaryClient" />
         <item itemvalue="Application.DictionaryServer" />
-        <item itemvalue="Application.DictionaryClientGUI" />
       </list>
     </recent_temporary>
   </component>
@@ -201,7 +204,7 @@
       <workItem from="1693388386285" duration="596000" />
       <workItem from="1694067828839" duration="126000" />
       <workItem from="1694132475463" duration="635000" />
-      <workItem from="1694660873338" duration="12803000" />
+      <workItem from="1694660873338" duration="16856000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1692861614607</created>
@@ -336,7 +339,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694687634390</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Assignment 2 basic architecture">
+      <created>1694756774775</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1694756774775</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -371,7 +381,8 @@
     <MESSAGE value="Assignment 2 init" />
     <MESSAGE value="Assignment 2 start" />
     <MESSAGE value="Assignment 2 basic architecture" />
-    <option name="LAST_COMMIT_MESSAGE" value="Assignment 2 basic architecture" />
+    <MESSAGE value="Assignment 2 day 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Assignment 2 day 3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -8,7 +8,7 @@ import java.net.Socket;
 public class Player extends Thread {
     private Socket socket;
     PrintWriter out;
-    private BufferedReader in;
+    BufferedReader in;
     private String name;
 
     public Player(Socket socket) {
