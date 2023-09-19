@@ -5,8 +5,8 @@ public enum GameState {
     IN_PROGRESS("In Progress"),
     PLAYER_X_WON("Player X Won"),
     PLAYER_O_WON("Player O Won"),
-    DRAW("Draw");
-
+    DRAW("Draw"),
+    MOVE_ERROR("Move Error");
     private final String description;
 
     GameState(String description) {

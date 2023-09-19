@@ -9,11 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 day 4-1">
+    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 day 4-1 bug">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/GameState.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +93,7 @@
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Assignment2.Client" />
       <module name="COMP90015DS" />
-      <option name="PROGRAM_PARAMETERS" value="Sam2 localhost 10240" />
+      <option name="PROGRAM_PARAMETERS" value="A localhost 10240" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="Assignment2.*" />
@@ -202,7 +202,7 @@
       <workItem from="1693388386285" duration="596000" />
       <workItem from="1694067828839" duration="126000" />
       <workItem from="1694132475463" duration="635000" />
-      <workItem from="1694660873338" duration="25364000" />
+      <workItem from="1694660873338" duration="29791000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1692861614607</created>
@@ -372,7 +372,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695106840796</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Assignment 2 day 4-1 bug">
+      <created>1695107638170</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1695107638170</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -411,7 +418,8 @@
     <MESSAGE value="Assignment 2 day 3-2" />
     <MESSAGE value="Assignment 2 day 3-3" />
     <MESSAGE value="Assignment 2 day 4-1" />
-    <option name="LAST_COMMIT_MESSAGE" value="Assignment 2 day 4-1" />
+    <MESSAGE value="Assignment 2 day 4-1 bug" />
+    <option name="LAST_COMMIT_MESSAGE" value="Assignment 2 day 4-1 bug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -423,7 +431,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/Assignment1/Server/DictionaryServer.java</url>
           <line>24</line>
-          <properties class="Server.DictionaryServer" method="run">
+          <properties class="Assignment1.Server.DictionaryServer" method="run">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -432,7 +440,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/Assignment1/Client/DictionaryClient.java</url>
           <line>98</line>
-          <properties class="Client.DictionaryClient" method="main">
+          <properties class="Assignment1.Client.DictionaryClient">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -441,7 +449,7 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/Assignment1/Client/DictionaryClient.java</url>
           <line>25</line>
-          <properties class="Client.DictionaryClient" method="&lt;init&gt;">
+          <properties class="Assignment1.Client.DictionaryClient">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
@@ -450,11 +458,29 @@
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/main/java/Assignment1/Client/DictionaryClientGUI.java</url>
           <line>33</line>
-          <properties class="Client.DictionaryClientGUI" method="init">
+          <properties class="Assignment1.Client.DictionaryClientGUI">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
           <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/Assignment2/Client.java</url>
+          <line>25</line>
+          <properties class="Assignment2.Client" method="run">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/Assignment2/Game.java</url>
+          <line>37</line>
+          <properties class="Assignment2.Game" method="run">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="41" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

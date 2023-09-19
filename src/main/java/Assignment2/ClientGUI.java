@@ -28,8 +28,13 @@ public class ClientGUI {
     private JButton button9;
     private JTextArea userMessageInputArea;
     private JLabel timer;
+    // below is the Non-UI variables
     private BufferedWriter writer;
     private BufferedReader reader;
+    private char[][] localBoard = new char[3][3];
+    private boolean isMyTurn = false;
+
+
 
     public ClientGUI(BufferedWriter writer, BufferedReader reader) {
         this.writer = writer;
@@ -37,17 +42,7 @@ public class ClientGUI {
         // Initialize the game board to be empty and display "Finding Player" message
         initializeBoard();
         playerTurn.setText("Finding Player");
-        button1.setActionCommand("0,0");
-        button2.setActionCommand("0,1");
-        button3.setActionCommand("0,2");
-        button4.setActionCommand("1,0");
-        button5.setActionCommand("1,1");
-        button6.setActionCommand("1,2");
-        button7.setActionCommand("2,0");
-        button8.setActionCommand("2,1");
-        button9.setActionCommand("2,2");
-
-
+        setButtonCommands();
         // Quit button functionality
         quitButton.addActionListener(new ActionListener() {
             @Override
@@ -68,19 +63,16 @@ public class ClientGUI {
                 sendMoveToServer(row, col);
             }
         };
+        addButtonListeners(gameButtonListener);
 
-        button1.addActionListener(gameButtonListener);
-        button2.addActionListener(gameButtonListener);
-        button3.addActionListener(gameButtonListener);
-        button4.addActionListener(gameButtonListener);
-        button5.addActionListener(gameButtonListener);
-        button6.addActionListener(gameButtonListener);
-        button7.addActionListener(gameButtonListener);
-        button8.addActionListener(gameButtonListener);
-        button9.addActionListener(gameButtonListener);
     }
 
     private void initializeBoard() {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                localBoard[i][j] = '-';
+            }
+        }
         button1.setText("-");
         button2.setText("-");
         button3.setText("-");
@@ -91,6 +83,28 @@ public class ClientGUI {
         button8.setText("-");
         button9.setText("-");
     }
+    private void setButtonCommands() {
+        button1.setActionCommand("0,0");
+        button2.setActionCommand("0,1");
+        button3.setActionCommand("0,2");
+        button4.setActionCommand("1,0");
+        button5.setActionCommand("1,1");
+        button6.setActionCommand("1,2");
+        button7.setActionCommand("2,0");
+        button8.setActionCommand("2,1");
+        button9.setActionCommand("2,2");
+    }
+    private void addButtonListeners(ActionListener listener) {
+        button1.addActionListener(listener);
+        button2.addActionListener(listener);
+        button3.addActionListener(listener);
+        button4.addActionListener(listener);
+        button5.addActionListener(listener);
+        button6.addActionListener(listener);
+        button7.addActionListener(listener);
+        button8.addActionListener(listener);
+        button9.addActionListener(listener);
+    }
 
     public void init() {
         JFrame frame = new JFrame("ClientGUI");
@@ -100,6 +114,14 @@ public class ClientGUI {
         frame.setVisible(true);
     }
     private void sendMoveToServer(int row, int col) {
+        if (!isMyTurn) {
+            JOptionPane.showMessageDialog(null, "It's not your turn!", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (localBoard[row][col] != '-') {
+            JOptionPane.showMessageDialog(null, "Invalid move! Cell is already occupied.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         JSONObject moveJson = new JSONObject();
         moveJson.put("action", "move");
         moveJson.put("row", row);
@@ -116,23 +138,35 @@ public class ClientGUI {
         }
     }
     public void updateGUI(JSONObject receivedJson) {
+        String action = (String) receivedJson.get("action");
+        if ("updateBoard".equals(action)) {
+            String boardString = (String) receivedJson.get("board");
+            updateBoard(boardString);
+        }
+
         String status = (String) receivedJson.get("status");
         if ("START".equals(status)) {
             String mark = (String) receivedJson.get("mark");
+            isMyTurn = mark.equals("X"); // If the player is 'X', they start the game
             playerTurn.setText("Game Started! You are: " + mark);
             return;
+        }
+
+        if ("Invalid move! Cell is already occupied.".equals(status) || "Not your turn!".equals(status)) {
+            isMyTurn = false; // If the move was invalid or it's not their turn, set isMyTurn to false
+        } else {
+            isMyTurn = !isMyTurn; // Toggle the turn after a valid move
         }
 
         String gameStateDescription = (String) receivedJson.get("gameState");
         GameState receivedState;
         try {
-             receivedState = GameState.valueOf(gameStateDescription.replace(" ", "_").toUpperCase());
+            receivedState = GameState.valueOf(gameStateDescription.replace(" ", "_").toUpperCase());
             switch (receivedState) {
                 case WAITING_FOR_PLAYER:
                     playerTurn.setText("Waiting for another player...");
                     break;
                 case IN_PROGRESS:
-                    // Update the board and other game details
                     break;
                 case PLAYER_X_WON:
                     playerTurn.setText("Player X won!");
@@ -147,19 +181,43 @@ public class ClientGUI {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-
-        if ("updateBoard".equals(receivedJson.get("action"))) {
-            String boardString = (String) receivedJson.get("board");
-            updateBoardFromReceivedString(boardString);
+        setButtonsEnabled(isMyTurn);
+    }
+    private void updateBoard(String boardString) {
+        char[][] board = new char[3][3];
+        int index = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                board[i][j] = boardString.charAt(index++);
+            }
         }
 
+        button1.setText(String.valueOf(board[0][0]));
+        button2.setText(String.valueOf(board[0][1]));
+        button3.setText(String.valueOf(board[0][2]));
+        button4.setText(String.valueOf(board[1][0]));
+        button5.setText(String.valueOf(board[1][1]));
+        button6.setText(String.valueOf(board[1][2]));
+        button7.setText(String.valueOf(board[2][0]));
+        button8.setText(String.valueOf(board[2][1]));
+        button9.setText(String.valueOf(board[2][2]));
 
-    }
-    private void updateBoardFromReceivedString(String boardString) {
-        JButton[] buttons = {button1, button2, button3, button4, button5, button6, button7, button8, button9};
-        for (int i = 0; i < boardString.length(); i++) {
-            buttons[i].setText(String.valueOf(boardString.charAt(i)));
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 2; j++) {
+                localBoard[i][j] = board[i][j];
+            }
         }
     }
 
+    private void setButtonsEnabled(boolean enabled) {
+        button1.setEnabled(enabled);
+        button2.setEnabled(enabled);
+        button3.setEnabled(enabled);
+        button4.setEnabled(enabled);
+        button5.setEnabled(enabled);
+        button6.setEnabled(enabled);
+        button7.setEnabled(enabled);
+        button8.setEnabled(enabled);
+        button9.setEnabled(enabled);
+    }
 }

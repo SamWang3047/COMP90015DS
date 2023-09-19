@@ -39,8 +39,15 @@ public class Game extends Thread {
         player1.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player1.mark)));
         player2.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player2.mark)));
         while (true) {
-            handlePlayerMove(player1);
-            handlePlayerMove(player2);
+            if (currentPlayerMark == player1.mark) {
+                handlePlayerMove(player1);
+            } else {
+                handlePlayerMove(player2);
+            }
+
+            if (currentState == GameState.MOVE_ERROR) {
+                continue; // If there's an error, continue the loop without switching players
+            }
             // Handle game logic, communication between players, and checking for win conditions
             if (checkWin()) {
                 // Inform players about the winner and break out of the loop
@@ -123,12 +130,20 @@ public class Game extends Thread {
             JSONObject json = (JSONObject) new JSONParser().parse(message);
             String action = (String) json.get("action");
             if ("move".equals(action)) {
+                if (player.mark != currentPlayerMark) {
+                    player.out.println(createJsonMessage("status", "Not your turn!"));
+                    return;
+                }
                 int row = ((Long) json.get("row")).intValue();
                 int col = ((Long) json.get("col")).intValue();
-                makeMove(row, col);
+                if (!makeMove(row, col)) {
+                    currentState = GameState.MOVE_ERROR;
+                    player.out.println(createJsonMessage("status", "Invalid move! Cell is already occupied."));
+                    return; // Do not proceed further if the move was invalid
+                }
                 sendUpdatedBoardToClients();
                 // After making the move, update both clients with the new game state
-                updateClients();
+                //updateClients();
             }
         } catch (ParseException | IOException e) {
             e.printStackTrace();
@@ -136,11 +151,12 @@ public class Game extends Thread {
         }
     }
 
-    private void makeMove(int row, int col) {
+    private boolean makeMove(int row, int col) {
         if (board[row][col] == '-') {
             board[row][col] = currentPlayerMark;
+            return true; // valid move
         }
-        // You can also add checks to ensure the move is valid
+        return false; // invalid move
     }
 
     private void sendUpdatedBoardToClients() {
