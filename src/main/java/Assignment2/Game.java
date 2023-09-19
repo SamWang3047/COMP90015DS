@@ -11,6 +11,7 @@ public class Game extends Thread {
     private Player player2;
     private char[][] board = new char[3][3];
     private char currentPlayerMark;
+    private GameState currentState;
 
     public Game(Player player1, Player player2) {
         this.player1 = player1;
@@ -21,6 +22,7 @@ public class Game extends Thread {
             }
         }
         currentPlayerMark = 'X'; // Let's start with 'X'
+        this.currentState = GameState.WAITING_FOR_PLAYER;
     }
 
     @Override
@@ -28,14 +30,22 @@ public class Game extends Thread {
         player1.out.println(createJsonMessage("status", "START"));
         player2.out.println(createJsonMessage("status", "START"));
         while (true) {
+            handlePlayerMove(player1);
+            handlePlayerMove(player2);
             // Handle game logic, communication between players, and checking for win conditions
             if (checkWin()) {
                 // Inform players about the winner and break out of the loop
+                if (currentPlayerMark == 'X') {
+                    currentState = GameState.PLAYER_X_WON;
+                } else {
+                    currentState = GameState.PLAYER_O_WON;
+                }
                 String winnerMessage = currentPlayerMark + " wins!";
                 player1.out.println(createJsonMessage("status", winnerMessage));
                 player2.out.println(createJsonMessage("status", winnerMessage));
                 break;
             } else if (checkDraw()) {
+                currentState = GameState.DRAW;
                 // Inform players about the draw and break out of the loop
                 player1.out.println(createJsonMessage("status", "Draw"));
                 player2.out.println(createJsonMessage("status", "Draw"));
@@ -101,6 +111,8 @@ public class Game extends Thread {
                 int row = ((Long) json.get("row")).intValue();
                 int col = ((Long) json.get("col")).intValue();
                 makeMove(row, col);
+                // After making the move, update both clients with the new game state
+                updateClients();
             }
         } catch (ParseException | IOException e) {
             e.printStackTrace();
@@ -114,6 +126,26 @@ public class Game extends Thread {
         }
         // You can also add checks to ensure the move is valid
     }
+
+    private void sendUpdatedBoardToClients() {
+        JSONObject boardJson = new JSONObject();
+        boardJson.put("action", "updateBoard");
+        boardJson.put("board", board); // Convert the 2D char array to a suitable format for JSON
+        player1.out.println(boardJson.toJSONString());
+        player2.out.println(boardJson.toJSONString());
+    }
+
+    private void updateClients() {
+        // Convert the current game state to a JSONObject
+        JSONObject gameStateJson = new JSONObject();
+        // Add game state details to the gameState object
+        gameStateJson.put("gameState", currentState.getDescription());
+        // Send the gameState to both players
+        player1.out.println(gameStateJson.toJSONString());
+        player2.out.println(gameStateJson.toJSONString());
+    }
+
+
 
 }
 

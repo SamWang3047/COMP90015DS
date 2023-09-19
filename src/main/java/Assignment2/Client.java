@@ -21,8 +21,6 @@ public class Client {
         this.username = username;
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
-        clientGUI = new ClientGUI();
-        clientGUI.init();
     }
 
     public void run() {
@@ -30,7 +28,8 @@ public class Client {
             socket = new Socket(serverAddress, serverPort);
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-
+            clientGUI = new ClientGUI(writer, reader);
+            clientGUI.init();
             // Send the username to the server
             // Send the username to the server as a JSON message
             JSONObject request = new JSONObject();
@@ -47,6 +46,7 @@ public class Client {
                 String receivedUsername = (String) receivedJson.get("username");
                 String receivedMessage = (String) receivedJson.get("message");
                 // Update the GUI based on the received JSON message
+                clientGUI.updateGUI(receivedJson);
             }
         } catch (IOException e) {
             e.printStackTrace();
