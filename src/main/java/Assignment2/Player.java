@@ -34,6 +34,7 @@ public class Player extends Thread {
             // Send a welcome message in JSON format
             JSONObject welcomeMessage = new JSONObject();
             welcomeMessage.put("message", "Welcome " + username + "! Waiting for another player...");
+            welcomeMessage.put("status", GameState.WAITING_FOR_PLAYER.getDescription());
             out.println(welcomeMessage.toJSONString());
 
             TicTacToeServer.waitingPlayers.add(this);

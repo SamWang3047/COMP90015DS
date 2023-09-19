@@ -11,6 +11,7 @@ import java.io.IOException;
 
 public class ClientGUI {
     private JPanel gamePanel;
+    private JTextArea usernameArea;
     private JButton quitButton;
     private JTextArea userMessageArea;
     private JLabel playerChat;
@@ -33,12 +34,16 @@ public class ClientGUI {
     private BufferedReader reader;
     private char[][] localBoard = new char[3][3];
     private boolean isMyTurn = false;
+    private String username;
+    private String opponentName;
 
 
 
-    public ClientGUI(BufferedWriter writer, BufferedReader reader) {
+    public ClientGUI(BufferedWriter writer, BufferedReader reader, String username) {
         this.writer = writer;
         this.reader = reader;
+        this.username = username;
+        usernameArea.setText("username: " + username);
         // Initialize the game board to be empty and display "Finding Player" message
         initializeBoard();
         playerTurn.setText("Finding Player");
@@ -55,6 +60,7 @@ public class ClientGUI {
         ActionListener gameButtonListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 JButton clickedButton = (JButton) e.getSource();
                 String actionCommand = clickedButton.getActionCommand();
                 String[] position = actionCommand.split(",");
@@ -64,7 +70,6 @@ public class ClientGUI {
             }
         };
         addButtonListeners(gameButtonListener);
-
     }
 
     private void initializeBoard() {
@@ -147,8 +152,10 @@ public class ClientGUI {
         String status = (String) receivedJson.get("status");
         if ("START".equals(status)) {
             String mark = (String) receivedJson.get("mark");
+            opponentName = (String) receivedJson.get("opponentName"); // Get opponent's name from the server
             isMyTurn = mark.equals("X"); // If the player is 'X', they start the game
-            playerTurn.setText("Game Started! You are: " + mark);
+            playerTurn.setText(isMyTurn ? username + "'s turn" : opponentName + "'s turn"); // Set the name based on the turn
+            JOptionPane.showMessageDialog(null, "Game Started! You hold: " + mark + ". Your opponent is: " + opponentName, "Game Start", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -156,9 +163,14 @@ public class ClientGUI {
             isMyTurn = false; // If the move was invalid or it's not their turn, set isMyTurn to false
         } else {
             isMyTurn = !isMyTurn; // Toggle the turn after a valid move
+            playerTurn.setText(isMyTurn ? username + "'s turn" : opponentName + "'s turn"); // Set the name based on the turn
         }
 
         String gameStateDescription = (String) receivedJson.get("status");
+        if (GameState.MOVE_ERROR.getDescription().equals(gameStateDescription)) {
+            JOptionPane.showMessageDialog(null, "Invalid move! Cell is already occupied.", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
         GameState receivedState;
         if (gameStateDescription != null) {
             try {
@@ -188,7 +200,7 @@ public class ClientGUI {
         }
         setButtonsEnabled(isMyTurn);
     }
-    private void updateBoard(String boardString) {
+    private synchronized void updateBoard(String boardString) {
         char[][] board = new char[3][3];
         int index = 0;
         for (int i = 0; i < 3; i++) {
@@ -207,8 +219,8 @@ public class ClientGUI {
         button8.setText(String.valueOf(board[2][1]));
         button9.setText(String.valueOf(board[2][2]));
 
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
                 localBoard[i][j] = board[i][j];
             }
         }

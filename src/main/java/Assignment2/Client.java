@@ -28,7 +28,7 @@ public class Client {
             socket = new Socket(serverAddress, serverPort);
             writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            clientGUI = new ClientGUI(writer, reader);
+            clientGUI = new ClientGUI(writer, reader, username);
             clientGUI.init();
             // Send the username to the server
             // Send the username to the server as a JSON message

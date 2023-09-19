@@ -36,8 +36,12 @@ public class Game extends Thread {
 
     @Override
     public void run() {
-        player1.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player1.mark)));
-        player2.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player2.mark)));
+        // Inform player1 about the game start and provide the opponent's name (player2's name)
+        player1.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player1.mark), "opponentName", player2.getUsername()));
+
+        // Inform player2 about the game start and provide the opponent's name (player1's name)
+        player2.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player2.mark), "opponentName", player1.getUsername()));
+
         while (true) {
             if (currentPlayerMark == player1.mark) {
                 handlePlayerMove(player1);
@@ -76,7 +80,7 @@ public class Game extends Thread {
         }
     }
 
-    private boolean checkWin() {
+    private synchronized boolean checkWin() {
         return (checkRows() || checkColumns() || checkDiagonals());
     }
 
@@ -103,7 +107,7 @@ public class Game extends Thread {
                 (board[0][2] == currentPlayerMark && board[1][1] == currentPlayerMark && board[2][0] == currentPlayerMark));
     }
 
-    private boolean checkDraw() {
+    private synchronized boolean checkDraw() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j] == '-') {
@@ -114,22 +118,20 @@ public class Game extends Thread {
         return true;
     }
 
-    private void switchPlayer() {
+    private synchronized void switchPlayer() {
         currentPlayerMark = (currentPlayerMark == 'X') ? 'O' : 'X';
     }
-    private String createJsonMessage(String key, String value) {
+
+    private String createJsonMessage(String... keyValues) {
         JSONObject json = new JSONObject();
-        json.put(key, value);
-        return json.toJSONString();
-    }
-    private String createJsonMessage(String key1, String value1, String key2, String value2) {
-        JSONObject json = new JSONObject();
-        json.put(key1, value1);
-        json.put(key2, value2);
+        for (int i = 0; i < keyValues.length; i += 2) {
+            json.put(keyValues[i], keyValues[i + 1]);
+        }
         return json.toJSONString();
     }
 
-    private void handlePlayerMove(Player player) {
+
+    private synchronized void handlePlayerMove(Player player) {
         try {
             String message = player.in.readLine(); // Assuming 'in' is a BufferedReader in the Player class
             JSONObject json = (JSONObject) new JSONParser().parse(message);
@@ -143,7 +145,7 @@ public class Game extends Thread {
                 int col = ((Long) json.get("col")).intValue();
                 if (!makeMove(row, col)) {
                     currentState = GameState.MOVE_ERROR;
-                    player.out.println(createJsonMessage("status", "Invalid move! Cell is already occupied."));
+                    player.out.println(createJsonMessage("status", GameState.MOVE_ERROR.getDescription()));
                     return; // Do not proceed further if the move was invalid
                 }
                 sendUpdatedBoardToClients();
@@ -181,17 +183,6 @@ public class Game extends Thread {
         }
         return sb.toString();
     }
-
-    private void updateClients() {
-        // Convert the current game state to a JSONObject
-        JSONObject gameStateJson = new JSONObject();
-        // Add game state details to the gameState object
-        gameStateJson.put("gameState", currentState.getDescription());
-        // Send the gameState to both players
-        player1.out.println(gameStateJson.toJSONString());
-        player2.out.println(gameStateJson.toJSONString());
-    }
-
 
 
 }
