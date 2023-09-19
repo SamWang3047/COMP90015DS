@@ -56,18 +56,23 @@ public class Game extends Thread {
                 } else {
                     currentState = GameState.PLAYER_O_WON;
                 }
-                String winnerMessage = currentPlayerMark + " wins!";
-                player1.out.println(createJsonMessage("status", winnerMessage));
-                player2.out.println(createJsonMessage("status", winnerMessage));
+                JSONObject json = new JSONObject();
+                json.put("status", currentState.getDescription());
+                json.put("playerName", (currentPlayerMark == player1.mark) ? player1.getUsername() : player2.getUsername());
+                player1.out.println(json.toJSONString());
+                player2.out.println(json.toJSONString());
+                System.out.println("Sending message to clients: " + json.toJSONString());
                 break;
             } else if (checkDraw()) {
                 currentState = GameState.DRAW;
                 // Inform players about the draw and break out of the loop
                 player1.out.println(createJsonMessage("status", "Draw"));
                 player2.out.println(createJsonMessage("status", "Draw"));
+                System.out.println(createJsonMessage("status", "Draw"));
                 break;
             }
             switchPlayer();
+
         }
     }
 

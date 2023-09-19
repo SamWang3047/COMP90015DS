@@ -43,9 +43,7 @@ public class Client {
             JSONParser parser = new JSONParser();
             while ((serverMessage = reader.readLine()) != null) {
                 JSONObject receivedJson = (JSONObject) parser.parse(serverMessage);
-                String receivedUsername = (String) receivedJson.get("username");
-                String receivedMessage = (String) receivedJson.get("message");
-                // Update the GUI based on the received JSON message
+                System.out.println("Received message from server: " + serverMessage);
                 clientGUI.updateGUI(receivedJson);
             }
         } catch (IOException e) {

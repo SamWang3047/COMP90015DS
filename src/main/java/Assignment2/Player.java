@@ -12,7 +12,7 @@ public class Player extends Thread {
     private Socket socket;
     PrintWriter out;
     BufferedReader in;
-    private String name;
+    private String username;
     private JSONParser parser = new JSONParser();
     public char mark;
 
@@ -28,12 +28,12 @@ public class Player extends Thread {
 
             // Read the name from a JSON message
             JSONObject json = (JSONObject) parser.parse(in.readLine());
-            name = (String) json.get("username");
-            System.out.println(name);
+            username = (String) json.get("username");
+            System.out.println(username);
 
             // Send a welcome message in JSON format
             JSONObject welcomeMessage = new JSONObject();
-            welcomeMessage.put("message", "Welcome " + name + "! Waiting for another player...");
+            welcomeMessage.put("message", "Welcome " + username + "! Waiting for another player...");
             out.println(welcomeMessage.toJSONString());
 
             TicTacToeServer.waitingPlayers.add(this);
@@ -54,5 +54,9 @@ public class Player extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

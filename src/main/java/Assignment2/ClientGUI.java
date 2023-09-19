@@ -158,28 +158,33 @@ public class ClientGUI {
             isMyTurn = !isMyTurn; // Toggle the turn after a valid move
         }
 
-        String gameStateDescription = (String) receivedJson.get("gameState");
+        String gameStateDescription = (String) receivedJson.get("status");
         GameState receivedState;
-        try {
-            receivedState = GameState.valueOf(gameStateDescription.replace(" ", "_").toUpperCase());
-            switch (receivedState) {
-                case WAITING_FOR_PLAYER:
-                    playerTurn.setText("Waiting for another player...");
-                    break;
-                case IN_PROGRESS:
-                    break;
-                case PLAYER_X_WON:
-                    playerTurn.setText("Player X won!");
-                    break;
-                case PLAYER_O_WON:
-                    playerTurn.setText("Player O won!");
-                    break;
-                case DRAW:
-                    playerTurn.setText("It's a draw!");
-                    break;
+        if (gameStateDescription != null) {
+            try {
+                receivedState = GameState.valueOf(gameStateDescription.replace(" ", "_").toUpperCase());
+                switch (receivedState) {
+                    case WAITING_FOR_PLAYER:
+                        playerTurn.setText("Waiting for another player...");
+                        break;
+                    case IN_PROGRESS:
+                        break;
+                    case PLAYER_X_WON:
+                        playerTurn.setText("Player X won!");
+                        JOptionPane.showMessageDialog(null, "Player X (" + receivedJson.get("playerName") + ") has won!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    case PLAYER_O_WON:
+                        playerTurn.setText("Player O won!");
+                        JOptionPane.showMessageDialog(null, "Player O (" + receivedJson.get("playerName") + ") has won!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    case DRAW:
+                        playerTurn.setText("It's a draw!");
+                        JOptionPane.showMessageDialog(null, "Draw!", "Game Over", JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
             }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
         }
         setButtonsEnabled(isMyTurn);
     }
