@@ -14,6 +14,7 @@ public class Player extends Thread {
     BufferedReader in;
     private String name;
     private JSONParser parser = new JSONParser();
+    public char mark;
 
     public Player(Socket socket) {
         this.socket = socket;

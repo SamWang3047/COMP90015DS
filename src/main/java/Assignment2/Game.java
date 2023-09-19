@@ -5,6 +5,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class Game extends Thread {
     private Player player1;
@@ -21,14 +22,22 @@ public class Game extends Thread {
                 board[i][j] = '-';
             }
         }
+        Random random = new Random();
+        if (random.nextBoolean()) {
+            player1.mark = 'X';
+            player2.mark = 'O';
+        } else {
+            player1.mark = 'O';
+            player2.mark = 'X';
+        }
         currentPlayerMark = 'X'; // Let's start with 'X'
         this.currentState = GameState.WAITING_FOR_PLAYER;
     }
 
     @Override
     public void run() {
-        player1.out.println(createJsonMessage("status", "START"));
-        player2.out.println(createJsonMessage("status", "START"));
+        player1.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player1.mark)));
+        player2.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player2.mark)));
         while (true) {
             handlePlayerMove(player1);
             handlePlayerMove(player2);
@@ -101,6 +110,12 @@ public class Game extends Thread {
         json.put(key, value);
         return json.toJSONString();
     }
+    private String createJsonMessage(String key1, String value1, String key2, String value2) {
+        JSONObject json = new JSONObject();
+        json.put(key1, value1);
+        json.put(key2, value2);
+        return json.toJSONString();
+    }
 
     private void handlePlayerMove(Player player) {
         try {
@@ -111,6 +126,7 @@ public class Game extends Thread {
                 int row = ((Long) json.get("row")).intValue();
                 int col = ((Long) json.get("col")).intValue();
                 makeMove(row, col);
+                sendUpdatedBoardToClients();
                 // After making the move, update both clients with the new game state
                 updateClients();
             }
@@ -130,9 +146,19 @@ public class Game extends Thread {
     private void sendUpdatedBoardToClients() {
         JSONObject boardJson = new JSONObject();
         boardJson.put("action", "updateBoard");
-        boardJson.put("board", board); // Convert the 2D char array to a suitable format for JSON
+        boardJson.put("board", convertBoardToString());
         player1.out.println(boardJson.toJSONString());
         player2.out.println(boardJson.toJSONString());
+    }
+
+    private String convertBoardToString() {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                sb.append(board[i][j]);
+            }
+        }
+        return sb.toString();
     }
 
     private void updateClients() {

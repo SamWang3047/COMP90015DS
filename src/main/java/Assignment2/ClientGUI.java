@@ -116,6 +116,13 @@ public class ClientGUI {
         }
     }
     public void updateGUI(JSONObject receivedJson) {
+        String status = (String) receivedJson.get("status");
+        if ("START".equals(status)) {
+            String mark = (String) receivedJson.get("mark");
+            playerTurn.setText("Game Started! You are: " + mark);
+            return;
+        }
+
         String gameStateDescription = (String) receivedJson.get("gameState");
         GameState receivedState;
         try {
@@ -141,6 +148,18 @@ public class ClientGUI {
             e.printStackTrace();
         }
 
+        if ("updateBoard".equals(receivedJson.get("action"))) {
+            String boardString = (String) receivedJson.get("board");
+            updateBoardFromReceivedString(boardString);
+        }
+
+
+    }
+    private void updateBoardFromReceivedString(String boardString) {
+        JButton[] buttons = {button1, button2, button3, button4, button5, button6, button7, button8, button9};
+        for (int i = 0; i < boardString.length(); i++) {
+            buttons[i].setText(String.valueOf(boardString.charAt(i)));
+        }
     }
 
 }

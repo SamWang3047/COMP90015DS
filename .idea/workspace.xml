@@ -9,12 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 day 3-3">
+    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 day 4-1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Client.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/GameState.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/GameState.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Player.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -203,7 +202,7 @@
       <workItem from="1693388386285" duration="596000" />
       <workItem from="1694067828839" duration="126000" />
       <workItem from="1694132475463" duration="635000" />
-      <workItem from="1694660873338" duration="24565000" />
+      <workItem from="1694660873338" duration="25364000" />
     </task>
     <task id="LOCAL-00001" summary="Init">
       <created>1692861614607</created>
@@ -366,7 +365,14 @@
       <option name="project" value="LOCAL" />
       <updated>1694767847860</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="Assignment 2 day 4-1">
+      <created>1695106840796</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1695106840796</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -404,7 +410,8 @@
     <MESSAGE value="Assignment 2 day 3" />
     <MESSAGE value="Assignment 2 day 3-2" />
     <MESSAGE value="Assignment 2 day 3-3" />
-    <option name="LAST_COMMIT_MESSAGE" value="Assignment 2 day 3-3" />
+    <MESSAGE value="Assignment 2 day 4-1" />
+    <option name="LAST_COMMIT_MESSAGE" value="Assignment 2 day 4-1" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
