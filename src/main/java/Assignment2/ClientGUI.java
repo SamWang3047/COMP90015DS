@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.awt.Font;
 
 public class ClientGUI {
     private JPanel gamePanel;
@@ -117,6 +118,17 @@ public class ClientGUI {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
+        Font buttonFont = new Font("Arial", Font.BOLD, 80);
+
+        button1.setFont(buttonFont);
+        button2.setFont(buttonFont);
+        button3.setFont(buttonFont);
+        button4.setFont(buttonFont);
+        button5.setFont(buttonFont);
+        button6.setFont(buttonFont);
+        button7.setFont(buttonFont);
+        button8.setFont(buttonFont);
+        button9.setFont(buttonFont);
     }
     private void sendMoveToServer(int row, int col) {
         if (!isMyTurn) {
