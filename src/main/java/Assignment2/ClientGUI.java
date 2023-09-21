@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.awt.Font;
 
 public class ClientGUI {
     private JPanel gamePanel;
