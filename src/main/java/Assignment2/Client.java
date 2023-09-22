@@ -44,6 +44,7 @@ public class Client {
             while ((serverMessage = reader.readLine()) != null) {
                 JSONObject receivedJson = (JSONObject) parser.parse(serverMessage);
                 System.out.println("Received message from server: " + serverMessage);
+
                 clientGUI.updateGUI(receivedJson);
             }
         } catch (IOException e) {

@@ -3,12 +3,15 @@ package Assignment2;
 import org.json.simple.JSONObject;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.awt.Font;
+import java.security.KeyPair;
+import java.util.ArrayList;
+import java.util.Random;
 
 public class ClientGUI {
     private JPanel gamePanel;
@@ -29,6 +32,9 @@ public class ClientGUI {
     private JButton button8;
     private JButton button9;
     private JTextArea userMessageInputArea;
+    private int timeLeft = 20; // Time left for the player's move
+    private Timer countdownTimer;
+
     private JLabel timer;
     // below is the Non-UI variables
     private BufferedWriter writer;
@@ -71,6 +77,19 @@ public class ClientGUI {
             }
         };
         addButtonListeners(gameButtonListener);
+
+        countdownTimer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timeLeft--;
+                Timer.setText(String.valueOf(timeLeft));
+                if (timeLeft <= 0) {
+                    makeRandomMove();
+                    countdownTimer.stop();
+                }
+            }
+        });
+
     }
 
     private void initializeBoard() {
@@ -88,6 +107,8 @@ public class ClientGUI {
         button7.setText("-");
         button8.setText("-");
         button9.setText("-");
+        Timer.setWrapStyleWord(true);
+        Timer.setLineWrap(true);
     }
     private void setButtonCommands() {
         button1.setActionCommand("0,0");
@@ -119,6 +140,7 @@ public class ClientGUI {
         frame.pack();
         frame.setVisible(true);
         Font buttonFont = new Font("Arial", Font.BOLD, 80);
+        Font TimerFont = new Font("Arial", Font.BOLD, 64);
 
         button1.setFont(buttonFont);
         button2.setFont(buttonFont);
@@ -129,6 +151,7 @@ public class ClientGUI {
         button7.setFont(buttonFont);
         button8.setFont(buttonFont);
         button9.setFont(buttonFont);
+        Timer.setFont(buttonFont);
     }
     private void sendMoveToServer(int row, int col) {
         if (!isMyTurn) {
@@ -153,12 +176,15 @@ public class ClientGUI {
             e.printStackTrace();
             // Handle any IO exceptions here, such as showing an error message to the user or attempting to reconnect
         }
+        countdownTimer.stop();
+        timeLeft = 20; // Reset the time for the next turn
     }
     public void updateGUI(JSONObject receivedJson) {
         String action = (String) receivedJson.get("action");
         if ("updateBoard".equals(action)) {
             String boardString = (String) receivedJson.get("board");
             updateBoard(boardString);
+            setTimer();
         }
 
         String status = (String) receivedJson.get("status");
@@ -249,4 +275,31 @@ public class ClientGUI {
         button8.setEnabled(enabled);
         button9.setEnabled(enabled);
     }
+    private void makeRandomMove() {
+        ArrayList<Point> availableMoves = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (localBoard[i][j] == '-') {
+                    availableMoves.add(new Point(i, j));
+                }
+            }
+        }
+        if (!availableMoves.isEmpty()) {
+            int randomIndex = new Random().nextInt(availableMoves.size());
+            Point randomMove = availableMoves.get(randomIndex);
+            sendMoveToServer(randomMove.x, randomMove.y);
+        }
+    }
+    public void setTimer() {
+        if (!isMyTurn) {
+            timeLeft = 20;
+            Timer.setText(String.valueOf(timeLeft));
+            countdownTimer.start();
+        } else {
+            timeLeft = 20; // Reset the time for the next turn
+            countdownTimer.stop();
+            Timer.setText(String.valueOf(timeLeft));
+        }
+    }
+
 }
