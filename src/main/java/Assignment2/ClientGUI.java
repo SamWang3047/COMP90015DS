@@ -180,11 +180,18 @@ public class ClientGUI {
         timeLeft = 20; // Reset the time for the next turn
     }
     public void updateGUI(JSONObject receivedJson) {
+
         String action = (String) receivedJson.get("action");
         if ("updateBoard".equals(action)) {
             String boardString = (String) receivedJson.get("board");
             updateBoard(boardString);
             setTimer();
+        }
+
+        // In ClientGUI.java, inside the updateGUI() method
+        if (receivedJson.containsKey("rank")) {
+            int rank = Integer.parseInt(receivedJson.get("rank").toString());
+            usernameArea.setText("Rank #" + rank + " " + username);
         }
 
         String status = (String) receivedJson.get("status");
@@ -301,5 +308,11 @@ public class ClientGUI {
             Timer.setText(String.valueOf(timeLeft));
         }
     }
+
+    // Example in ClientGUI.java or wherever you handle chat messages
+    public void displayChatMessage(String sender, String message, int rank) {
+        userMessageArea.append("Rank #" + rank + " " + sender + ": " + message + "\n");
+    }
+
 
 }

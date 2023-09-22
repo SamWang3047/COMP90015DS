@@ -9,11 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 day 4-4 done the game part, tested">
+    <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 day 6-1 done the timer part, tested">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Assignment2/PlayerData.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Player.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/TicTacToeServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/TicTacToeServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +95,7 @@
     <configuration name="Client" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Assignment2.Client" />
       <module name="COMP90015DS" />
-      <option name="PROGRAM_PARAMETERS" value="Sam localhost 10240" />
+      <option name="PROGRAM_PARAMETERS" value="Puppy localhost 10240" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="Assignment2.*" />
@@ -401,7 +403,21 @@
       <option name="project" value="LOCAL" />
       <updated>1695130107118</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Assignment 2 day 6-1 done the timer part, tested">
+      <created>1695346568865</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1695346568865</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Assignment 2 day 6-1 done the timer part, tested">
+      <created>1695347242293</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1695347242293</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -444,7 +460,8 @@
     <MESSAGE value="Assignment 2 day 4-2" />
     <MESSAGE value="Assignment 2 day 4-3" />
     <MESSAGE value="Assignment 2 day 4-4 done the game part, tested" />
-    <option name="LAST_COMMIT_MESSAGE" value="Assignment 2 day 4-4 done the game part, tested" />
+    <MESSAGE value="Assignment 2 day 6-1 done the timer part, tested" />
+    <option name="LAST_COMMIT_MESSAGE" value="Assignment 2 day 6-1 done the timer part, tested" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

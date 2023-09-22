@@ -36,11 +36,9 @@ public class Game extends Thread {
 
     @Override
     public void run() {
-        // Inform player1 about the game start and provide the opponent's name (player2's name)
-        player1.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player1.mark), "opponentName", player2.getUsername()));
-
-        // Inform player2 about the game start and provide the opponent's name (player1's name)
-        player2.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player2.mark), "opponentName", player1.getUsername()));
+        // In Game.java, when informing players about the game start
+        player1.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player1.mark), "opponentName", player2.getUsername(), "rank", String.valueOf(TicTacToeServer.playerDatabase.get(player1.getUsername()).getRank())));
+        player2.out.println(createJsonMessage("status", "START", "mark", String.valueOf(player2.mark), "opponentName", player1.getUsername(), "rank", String.valueOf(TicTacToeServer.playerDatabase.get(player2.getUsername()).getRank())));
 
         while (true) {
             if (currentPlayerMark == player1.mark) {
@@ -57,8 +55,12 @@ public class Game extends Thread {
                 // Inform players about the winner and break out of the loop
                 if (currentPlayerMark == 'X') {
                     currentState = GameState.PLAYER_X_WON;
+                    TicTacToeServer.playerDatabase.get(player1.getUsername()).addPoints(5);
+                    TicTacToeServer.playerDatabase.get(player2.getUsername()).addPoints(-5);
                 } else {
                     currentState = GameState.PLAYER_O_WON;
+                    TicTacToeServer.playerDatabase.get(player1.getUsername()).addPoints(-5);
+                    TicTacToeServer.playerDatabase.get(player2.getUsername()).addPoints(5);
                 }
                 JSONObject json = new JSONObject();
                 json.put("status", currentState.getDescription());
@@ -73,11 +75,15 @@ public class Game extends Thread {
                 player1.out.println(createJsonMessage("status", "Draw"));
                 player2.out.println(createJsonMessage("status", "Draw"));
                 System.out.println(createJsonMessage("status", "Draw"));
+                TicTacToeServer.playerDatabase.get(player1.getUsername()).addPoints(2);
+                TicTacToeServer.playerDatabase.get(player2.getUsername()).addPoints(2);
                 break;
             }
             switchPlayer();
-
         }
+        // In Game.java, after updating points
+        TicTacToeServer.updatePlayerRanks();
+
     }
 
     private synchronized boolean checkWin() {
