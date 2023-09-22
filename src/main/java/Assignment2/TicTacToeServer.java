@@ -18,17 +18,17 @@ public class TicTacToeServer {
                 threadPool.execute(player);
 
                 // Pair two players together if possible
-                synchronized(waitingPlayers) {
-                    if (waitingPlayers.size() >= 2) {
-                        Player player1 = waitingPlayers.poll();
-                        Player player2 = waitingPlayers.poll();
-
-                        if (player1 != null && player2 != null) {
-                            Game game = new Game(player1, player2);
-                            threadPool.execute(game);
-                        }
-                    }
-                }
+//                synchronized(waitingPlayers) {
+//                    if (waitingPlayers.size() >= 2) {
+//                        Player player1 = waitingPlayers.poll();
+//                        Player player2 = waitingPlayers.poll();
+//
+//                        if (player1 != null && player2 != null) {
+//                            Game game = new Game(player1, player2);
+//                            threadPool.execute(game);
+//                        }
+//                    }
+//                }
             }
         } catch (IOException e) {
             e.printStackTrace();
