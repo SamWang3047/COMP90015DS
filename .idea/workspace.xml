@@ -10,8 +10,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2a473ca-abc5-430c-935e-9bf0b1cca0c2" name="Changes" comment="Assignment 2 day 4-4 done the game part, tested">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.form" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.form" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/ClientGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Assignment2/Game.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

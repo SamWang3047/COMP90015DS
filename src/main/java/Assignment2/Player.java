@@ -30,6 +30,10 @@ public class Player extends Thread {
             JSONObject json = (JSONObject) parser.parse(in.readLine());
             username = (String) json.get("username");
             System.out.println(username);
+            // In Player.java, inside the run() method, after reading the username
+            if (!TicTacToeServer.playerDatabase.containsKey(username)) {
+                TicTacToeServer.playerDatabase.put(username, new PlayerData());
+            }
 
             // Send a welcome message in JSON format
             JSONObject welcomeMessage = new JSONObject();
