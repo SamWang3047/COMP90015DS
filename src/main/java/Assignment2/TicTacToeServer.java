@@ -20,7 +20,6 @@ public class TicTacToeServer {
             while (true) {
                 Player player = new Player(serverSocket.accept());
                 threadPool.execute(player);
-
             }
         } catch (IOException e) {
             e.printStackTrace();
