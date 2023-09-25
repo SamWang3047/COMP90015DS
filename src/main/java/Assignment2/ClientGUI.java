@@ -172,6 +172,7 @@ public class ClientGUI {
             writer.write(moveJson.toJSONString());
             writer.newLine();  // Important to add a newline for the server's BufferedReader to know when the message ends
             writer.flush();    // Ensure the message is actually sent out
+            System.out.println("Sending to server: " + moveJson.toJSONString());
         } catch (IOException e) {
             e.printStackTrace();
             // Handle any IO exceptions here, such as showing an error message to the user or attempting to reconnect

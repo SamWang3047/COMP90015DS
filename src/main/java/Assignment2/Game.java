@@ -136,6 +136,7 @@ public class Game extends Thread {
             String message = player.in.readLine(); // Assuming 'in' is a BufferedReader in the Player class
             JSONObject json = (JSONObject) new JSONParser().parse(message);
             String action = (String) json.get("action");
+            System.out.println("Receiving from client: " + json.toJSONString());
             if ("move".equals(action)) {
                 if (player.mark != currentPlayerMark) {
                     player.out.println(createJsonMessage("status", "Not your turn!"));
